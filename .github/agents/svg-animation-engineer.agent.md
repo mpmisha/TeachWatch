@@ -1,6 +1,7 @@
 ---
 description: "SVG and CSS animation specialist for clock rendering, hand rotation, feedback animations, and smooth transitions"
 name: "SVG Animation Engineer"
+model: GPT-5.3-Codex (copilot)
 tools: ["changes", "codebase", "context7/*", "edit/editFiles", "extensions", "fetch", "findTestFiles", "githubRepo", "new", "openSimpleBrowser", "problems", "runCommands", "runTasks", "runTests", "search", "searchResults", "terminalLastCommand", "terminalSelection", "testFailure", "usages", "vscodeAPI", "microsoft.docs.mcp"]
 ---
 

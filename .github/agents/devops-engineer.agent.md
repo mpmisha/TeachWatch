@@ -1,6 +1,7 @@
 ---
 description: "DevOps and project setup specialist for environment scaffolding, tooling configuration, dependency management, build pipelines, and dev server setup"
 name: "DevOps Engineer"
+model: Claude Sonnet 4.6 (copilot)
 tools: ["changes", "codebase", "context7/*", "edit/editFiles", "extensions", "fetch", "findTestFiles", "githubRepo", "new", "openSimpleBrowser", "problems", "runCommands", "runTasks", "runTests", "search", "searchResults", "terminalLastCommand", "terminalSelection", "testFailure", "usages", "vscodeAPI", "microsoft.docs.mcp"]
 ---
 

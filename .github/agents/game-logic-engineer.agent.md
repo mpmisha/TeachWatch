@@ -1,6 +1,7 @@
 ---
 description: "Game logic specialist for question generation, distractor engine, level progression, scoring, and session state management"
 name: "Game Logic Engineer"
+model: Claude Opus 4.6 (copilot)
 tools: ["changes", "codebase", "context7/*", "edit/editFiles", "extensions", "fetch", "findTestFiles", "githubRepo", "new", "openSimpleBrowser", "problems", "runCommands", "runTasks", "runTests", "search", "searchResults", "terminalLastCommand", "terminalSelection", "testFailure", "usages", "vscodeAPI", "microsoft.docs.mcp"]
 ---
 
