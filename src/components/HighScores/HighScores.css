@@ -142,7 +142,7 @@
   margin: 0;
   font-weight: 700;
   color: color-mix(in srgb, var(--title) 88%, #111 12%);
-  text-align: right;
+  text-align: end;
 }
 
 .high-scores__empty {

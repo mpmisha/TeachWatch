@@ -92,7 +92,7 @@
   border: 1px solid var(--panel-border);
   border-radius: 18px;
   padding: clamp(10px, 1.6vw, 14px);
-  text-align: left;
+  text-align: start;
   background: var(--panel-bg);
   color: inherit;
   cursor: pointer;
