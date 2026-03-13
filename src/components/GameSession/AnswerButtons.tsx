@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import { useTranslation } from '../../i18n';
 import Button from '../common/Button'
 import './AnswerButtons.css'
 
@@ -17,6 +18,7 @@ export function AnswerButtons({
   highlightIndex,
   highlightType,
 }: AnswerButtonsProps): ReactNode {
+  const { t } = useTranslation();
   const safeOptions = Array.isArray(options) ? options.slice(0, 4) : []
 
   if (safeOptions.length === 0) {
@@ -24,7 +26,7 @@ export function AnswerButtons({
   }
 
   return (
-    <div className="answer-grid" aria-label="Answer choices" role="group">
+    <div className="answer-grid" aria-label={t.answerChoices} role="group">
       {safeOptions.map((option, index) => {
         const shouldHighlight = highlightIndex === index && highlightType
         const highlightClass = shouldHighlight ? `answer--${highlightType}` : ''

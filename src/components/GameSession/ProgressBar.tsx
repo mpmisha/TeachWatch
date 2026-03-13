@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import { useTranslation } from '../../i18n';
 import './ProgressBar.css'
 
 export interface ProgressBarProps {
@@ -7,6 +8,7 @@ export interface ProgressBarProps {
 }
 
 export function ProgressBar({ current, total }: ProgressBarProps): ReactNode {
+  const { t } = useTranslation();
   const safeTotal = Number.isFinite(total) && total > 0 ? Math.floor(total) : 0
   const clampedCurrent = Math.max(0, Math.min(current, Math.max(0, safeTotal - 1)))
 
@@ -18,7 +20,7 @@ export function ProgressBar({ current, total }: ProgressBarProps): ReactNode {
     <div
       className="progress-bar"
       role="progressbar"
-      aria-label="Question progress"
+      aria-label={t.questionProgress}
       aria-valuemin={1}
       aria-valuemax={safeTotal}
       aria-valuenow={clampedCurrent + 1}

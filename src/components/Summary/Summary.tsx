@@ -1,4 +1,5 @@
 import Button from '../common/Button';
+import { useTranslation } from '../../i18n';
 import type { ClockFeatures, SessionResult } from '../../types/game';
 import StarRating from './StarRating';
 import TrickyTimes from './TrickyTimes';
@@ -29,24 +30,25 @@ export default function Summary({
   onTryAgain,
   onLevelSelect,
 }: SummaryProps) {
+  const { t } = useTranslation();
   const incorrectCount = result.answers.filter((answer) => !answer.correct).length;
   const isPerfect = incorrectCount === 0;
 
   return (
     <section className="summary" aria-labelledby="summary-title">
       <div className="summary__card">
-        <p className="summary__eyebrow">Session Complete</p>
+        <p className="summary__eyebrow">{t.sessionComplete}</p>
         <h2 id="summary-title" className="summary__title">
-          Great effort!
+          {t.greatEffort}
         </h2>
 
         <StarRating stars={result.stars} />
 
-        <p className="summary__score">{result.score} out of 10</p>
-        <p className="summary__time">Completed in {formatDuration(result.totalTime)}</p>
+        <p className="summary__score">{t.scoreOutOf10(result.score)}</p>
+        <p className="summary__time">{t.completedIn(formatDuration(result.totalTime))}</p>
 
         {isPerfect ? (
-          <p className="summary__perfect">Perfect round. Every clock was right on time!</p>
+          <p className="summary__perfect">{t.perfectRound}</p>
         ) : (
           <TrickyTimes
             questions={result.questions}
@@ -57,10 +59,10 @@ export default function Summary({
 
         <div className="summary__actions">
           <Button onClick={onTryAgain} variant="primary" className="summary__button">
-            Try Again
+            {t.tryAgain}
           </Button>
           <Button onClick={onLevelSelect} variant="secondary" className="summary__button">
-            Level Select
+            {t.levelSelect}
           </Button>
         </div>
       </div>

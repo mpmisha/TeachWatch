@@ -1,4 +1,5 @@
 import type { ClockAnimationState, ClockFeatures, ClockTime } from '../../types/game';
+import { useTranslation } from '../../i18n';
 import { ClockFace } from './ClockFace';
 import { ClockHands } from './ClockHands';
 import './Clock.css';
@@ -11,10 +12,6 @@ export interface ClockProps {
   className?: string;
 }
 
-function buildAriaLabel(time: ClockTime): string {
-  return `Analog clock showing ${time.hours}:${String(time.minutes).padStart(2, '0')}`;
-}
-
 export function Clock({
   time,
   features,
@@ -22,9 +19,11 @@ export function Clock({
   size = '300px',
   className,
 }: ClockProps) {
+  const { t } = useTranslation();
   const classes = ['clock-svg', `clock--${animationState}`, className]
     .filter(Boolean)
     .join(' ');
+  const paddedMinutes = String(time.minutes).padStart(2, '0');
 
   return (
     <svg
@@ -33,7 +32,7 @@ export function Clock({
       height={size}
       viewBox="0 0 100 100"
       role="img"
-      aria-label={buildAriaLabel(time)}
+      aria-label={t.clockAriaLabel(time.hours, paddedMinutes)}
     >
       <ClockFace features={features} />
       <ClockHands time={time} />

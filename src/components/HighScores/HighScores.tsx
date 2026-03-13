@@ -1,4 +1,5 @@
 import { LEVELS } from '../../logic/levelConfig';
+import { useTranslation } from '../../i18n';
 import type { HighScores as HighScoresMap } from '../../types/game';
 import Medal from './Medal';
 import './HighScores.css';
@@ -20,14 +21,14 @@ function formatDuration(totalSeconds: number): string {
   return `${minutes}m ${seconds}s`;
 }
 
-function formatLastPlayed(isoDate: string): string {
+function formatLastPlayed(isoDate: string, locale: string, fallback: string): string {
   const date = new Date(isoDate);
 
   if (Number.isNaN(date.getTime())) {
-    return 'Unknown date';
+    return fallback;
   }
 
-  return date.toLocaleDateString(undefined, {
+  return date.toLocaleDateString(locale, {
     year: 'numeric',
     month: 'short',
     day: 'numeric',
@@ -35,23 +36,30 @@ function formatLastPlayed(isoDate: string): string {
 }
 
 export default function HighScores({ highScores, onBack }: HighScoresProps) {
+  const { t, language } = useTranslation();
+
   return (
     <section className="high-scores" aria-labelledby="high-scores-title">
       <header className="high-scores__header">
         <div>
-          <p className="high-scores__eyebrow">Progress Tracker</p>
+          <p className="high-scores__eyebrow">{t.progressTracker}</p>
           <h1 id="high-scores-title" className="high-scores__title">
-            Trophy Room
+            {t.trophyRoom}
           </h1>
         </div>
 
         <button type="button" className="high-scores__back" onClick={onBack}>
-          Back
+          {t.back}
         </button>
       </header>
 
-      <div className="high-scores__grid" role="list" aria-label="Scores by level">
+      <div className="high-scores__grid" role="list" aria-label={t.scoresByLevel}>
         {LEVELS.map((level) => {
+          const levelText = t.levels[level.level - 1] ?? {
+            name: level.name,
+            description: level.description,
+            learningGoal: level.learningGoal,
+          };
           const record = highScores[level.level];
           const isPlayed = Boolean(record);
 
@@ -60,35 +68,37 @@ export default function HighScores({ highScores, onBack }: HighScoresProps) {
               key={level.level}
               className={`high-scores__card ${isPlayed ? '' : 'high-scores__card--empty'}`}
               role="listitem"
-              aria-label={`Level ${level.level}: ${level.name}`}
+              aria-label={t.levelAriaLabel(level.level, levelText.name)}
             >
               <div className="high-scores__card-head">
-                <p className="high-scores__level">Level {level.level}</p>
+                <p className="high-scores__level">{t.levelLabel(level.level)}</p>
                 <Medal score={record?.bestScore ?? 0} />
               </div>
 
-              <h2 className="high-scores__name">{level.name}</h2>
+              <h2 className="high-scores__name">{levelText.name}</h2>
 
               {isPlayed && record ? (
                 <dl className="high-scores__stats">
                   <div className="high-scores__stat-row">
-                    <dt>Best Score</dt>
-                    <dd>{record.bestScore}/10</dd>
+                    <dt>{t.bestScore}</dt>
+                    <dd>{t.scoreOf10(record.bestScore)}</dd>
                   </div>
                   <div className="high-scores__stat-row">
-                    <dt>Fastest Time</dt>
+                    <dt>{t.fastestTime}</dt>
                     <dd>{formatDuration(record.fastestTime)}</dd>
                   </div>
                   <div className="high-scores__stat-row">
-                    <dt>Last Played</dt>
+                    <dt>{t.lastPlayed}</dt>
                     <dd>
-                      <time dateTime={record.lastPlayed}>{formatLastPlayed(record.lastPlayed)}</time>
+                      <time dateTime={record.lastPlayed}>
+                        {formatLastPlayed(record.lastPlayed, language, t.unknownDate)}
+                      </time>
                     </dd>
                   </div>
                 </dl>
               ) : (
-                <p className="high-scores__empty" aria-label="Not played yet">
-                  Not played yet
+                <p className="high-scores__empty" aria-label={t.notPlayedYet}>
+                  {t.notPlayedYet}
                 </p>
               )}
             </article>

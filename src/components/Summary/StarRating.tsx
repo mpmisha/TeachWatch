@@ -1,13 +1,16 @@
+import { useTranslation } from '../../i18n';
+
 interface StarRatingProps {
   stars: 1 | 2 | 3;
   maxStars?: number;
 }
 
 export default function StarRating({ stars, maxStars = 3 }: StarRatingProps) {
+  const { t } = useTranslation();
   const starCount = Math.max(maxStars, stars);
 
   return (
-    <div className="summary-stars" role="img" aria-label={`${stars} out of ${starCount} stars`}>
+    <div className="summary-stars" role="img" aria-label={t.starsAriaLabel(stars, starCount)}>
       {Array.from({ length: starCount }, (_, index) => {
         const filled = index < stars;
 

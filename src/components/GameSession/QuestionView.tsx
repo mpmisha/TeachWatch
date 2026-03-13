@@ -1,4 +1,5 @@
 import type { ClockAnimationState, ClockFeatures, Question } from '../../types/game'
+import { useTranslation } from '../../i18n'
 import { Clock } from '../Clock/Clock'
 import { AnswerButtons } from './AnswerButtons'
 
@@ -19,10 +20,11 @@ export function QuestionView({
   disabled,
   answerFeedback,
 }: QuestionViewProps) {
+  const { t } = useTranslation()
   const showAnswerButtons = animationState !== 'sweeping'
 
   return (
-    <section className="question-view" aria-label="Current question">
+    <section className="question-view" aria-label={t.currentQuestion}>
       <div className="question-view__clock">
         <Clock
           time={question.time}
@@ -42,7 +44,7 @@ export function QuestionView({
             highlightType={answerFeedback?.highlightType}
           />
         ) : (
-          <div className="question-view__transition">Next question...</div>
+          <div className="question-view__transition">{t.nextQuestion}</div>
         )}
       </div>
     </section>

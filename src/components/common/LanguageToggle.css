@@ -1,0 +1,31 @@
+.language-toggle {
+  width: 3.25rem;
+  height: 2rem;
+  border: 1px solid var(--color-border, #dfe6e9);
+  border-radius: var(--radius-full, 9999px);
+  background: var(--color-surface, #ffffff);
+  color: var(--color-text, #2d3436);
+  font-size: 0.875rem;
+  font-weight: var(--font-weight-medium, 600);
+  line-height: 1;
+  cursor: pointer;
+  transition:
+    background-color var(--transition-fast, 150ms) ease,
+    color var(--transition-fast, 150ms) ease,
+    border-color var(--transition-fast, 150ms) ease,
+    transform var(--transition-fast, 150ms) ease;
+}
+
+.language-toggle:hover {
+  background: var(--color-background, #f8f9fa);
+  border-color: var(--color-primary, #4361ee);
+}
+
+.language-toggle:active {
+  transform: translateY(1px);
+}
+
+.language-toggle:focus-visible {
+  outline: 2px solid var(--color-primary, #4361ee);
+  outline-offset: 2px;
+}

@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react'
 import type { SessionResult } from '../../types/game'
 import { useGameSession } from '../../hooks/useGameSession'
+import { useTranslation } from '../../i18n'
 import Button from '../common/Button'
 import { ProgressBar } from './ProgressBar'
 import { QuestionView } from './QuestionView'
@@ -14,6 +15,7 @@ interface GameSessionProps {
 }
 
 export function GameSession({ level, onComplete, onQuit }: GameSessionProps) {
+  const { t } = useTranslation()
   const {
     currentQuestion,
     questionNumber,
@@ -45,10 +47,10 @@ export function GameSession({ level, onComplete, onQuit }: GameSessionProps) {
   const answersDisabled = !currentQuestion || animationState !== 'idle'
 
   return (
-    <main className="game-session" aria-label={`Level ${level} game session`}>
+    <main className="game-session" aria-label={t.levelGameSession(level)}>
       <header className="game-session__header">
         <Button variant="secondary" onClick={onQuit} className="game-session__quit-button">
-          Quit
+          {t.quit}
         </Button>
         <div className="game-session__progress-wrap">
           <ProgressBar current={Math.max(0, questionNumber - 1)} total={totalQuestions} />
@@ -66,7 +68,7 @@ export function GameSession({ level, onComplete, onQuit }: GameSessionProps) {
             answerFeedback={answerFeedback}
           />
         ) : (
-          <div className="game-session__loading">Preparing questions...</div>
+          <div className="game-session__loading">{t.preparingQuestions}</div>
         )}
 
         <FeedbackOverlay type={feedbackType} visible={feedbackVisible} />

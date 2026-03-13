@@ -1,4 +1,5 @@
 import { Clock } from '../Clock/Clock';
+import { useTranslation } from '../../i18n';
 import { formatTime } from '../../logic/timeUtils';
 import type { Answer, ClockFeatures, Question } from '../../types/game';
 
@@ -32,15 +33,16 @@ function buildMistakeEntries(questions: Question[], answers: Answer[]): MistakeE
 }
 
 export default function TrickyTimes({ questions, answers, clockFeatures }: TrickyTimesProps) {
+  const { t } = useTranslation();
   const mistakes = buildMistakeEntries(questions, answers);
 
   return (
     <section className="tricky-times" aria-labelledby="tricky-times-title">
       <h3 id="tricky-times-title" className="tricky-times__title">
-        Tricky Times
+        {t.trickyTimes}
       </h3>
 
-      <div className="tricky-times__grid" role="list" aria-label="Questions to practice again">
+      <div className="tricky-times__grid" role="list" aria-label={t.questionsToRetry}>
         {mistakes.map((mistake) => {
           const question = questions[mistake.questionIndex];
 
@@ -59,10 +61,10 @@ export default function TrickyTimes({ questions, answers, clockFeatures }: Trick
               />
 
               <p className="tricky-times__line">
-                <span className="tricky-times__label">Correct:</span> {mistake.correctText}
+                <span className="tricky-times__label">{t.correctLabel}</span> {mistake.correctText}
               </p>
               <p className="tricky-times__line tricky-times__line--wrong">
-                <span className="tricky-times__label">You picked:</span> {mistake.selectedText}
+                <span className="tricky-times__label">{t.youPicked}</span> {mistake.selectedText}
               </p>
             </article>
           );

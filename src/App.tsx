@@ -3,12 +3,15 @@ import LevelSelect from './components/LevelSelect/LevelSelect';
 import GameSession from './components/GameSession/GameSession';
 import Summary from './components/Summary/Summary';
 import HighScores from './components/HighScores/HighScores';
+import LanguageToggle from './components/common/LanguageToggle';
 import { useHighScores } from './hooks/useHighScores';
+import { useTranslation } from './i18n';
 import { getLevelConfig } from './logic/levelConfig';
 import type { SessionResult, View } from './types/game';
 import './App.css';
 
 function App() {
+  const { dir } = useTranslation();
   const { highScores, updateHighScore } = useHighScores();
   const [currentView, setCurrentView] = useState<View>('levelSelect');
   const [selectedLevel, setSelectedLevel] = useState(1);
@@ -86,7 +89,14 @@ function App() {
       break;
   }
 
-  return <div className="app">{content}</div>;
+  return (
+    <div className="app" dir={dir}>
+      <div className="app__language-toggle">
+        <LanguageToggle />
+      </div>
+      {content}
+    </div>
+  );
 }
 
 export default App;
