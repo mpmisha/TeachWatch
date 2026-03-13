@@ -1,0 +1,208 @@
+.high-scores {
+  --panel-bg: var(--color-panel, #fff9ef);
+  --panel-border: var(--color-panel-border, #f0d8b8);
+  --title: var(--color-title, #1f3c6e);
+  --body: var(--color-body, #2f3f54);
+  --accent: var(--color-accent, #ff9f43);
+  --accent-strong: var(--color-accent-strong, #ff7a00);
+
+  min-height: 100dvh;
+  padding: clamp(12px, 2.2vw, 24px);
+  overflow: hidden;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  gap: clamp(10px, 1.8vw, 16px);
+  background:
+    radial-gradient(circle at 10% 8%, rgba(255, 220, 160, 0.34), transparent 32%),
+    radial-gradient(circle at 90% 92%, rgba(144, 228, 200, 0.2), transparent 36%),
+    linear-gradient(165deg, #fffef9 0%, #fff6ea 100%);
+  color: var(--body);
+}
+
+.high-scores__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.high-scores__eyebrow {
+  margin: 0;
+  font-size: clamp(0.78rem, 1.7vw, 0.98rem);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: color-mix(in srgb, var(--body) 72%, white 28%);
+}
+
+.high-scores__title {
+  margin: 2px 0 0;
+  color: var(--title);
+  font-size: clamp(1.75rem, 4.6vw, 2.65rem);
+  line-height: 1.06;
+}
+
+.high-scores__back {
+  border: 0;
+  border-radius: 999px;
+  background: linear-gradient(140deg, var(--accent), var(--accent-strong));
+  color: #fff;
+  font: inherit;
+  font-size: clamp(0.9rem, 2.2vw, 1rem);
+  font-weight: 700;
+  min-height: var(--touch-min, 48px);
+  padding: 10px 16px;
+  cursor: pointer;
+  box-shadow: 0 8px 16px rgba(255, 122, 0, 0.28);
+  transition: transform 120ms ease, box-shadow 120ms ease, filter 120ms ease;
+}
+
+.high-scores__back:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 11px 18px rgba(255, 122, 0, 0.32);
+}
+
+.high-scores__back:active {
+  transform: translateY(1px);
+  filter: brightness(0.96);
+}
+
+.high-scores__back:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--accent-strong) 72%, white 28%);
+  outline-offset: 2px;
+}
+
+.high-scores__grid {
+  min-height: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(8px, 1.4vw, 14px);
+}
+
+.high-scores__card {
+  border: 1px solid var(--panel-border);
+  border-radius: 18px;
+  background: var(--panel-bg);
+  padding: clamp(10px, 1.5vw, 14px);
+  box-shadow: 0 6px 14px rgba(26, 42, 64, 0.12);
+  display: grid;
+  grid-template-rows: auto auto 1fr;
+  gap: 6px;
+  min-height: clamp(128px, 20vh, 184px);
+}
+
+.high-scores__card--empty {
+  color: color-mix(in srgb, var(--body) 60%, white 40%);
+  border-style: dashed;
+  border-color: color-mix(in srgb, var(--panel-border) 65%, white 35%);
+}
+
+.high-scores__card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.high-scores__level {
+  margin: 0;
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: color-mix(in srgb, var(--body) 76%, white 24%);
+}
+
+.high-scores__name {
+  margin: 0;
+  color: var(--title);
+  font-size: clamp(0.98rem, 2.3vw, 1.2rem);
+  line-height: 1.25;
+}
+
+.high-scores__stats {
+  display: grid;
+  align-content: start;
+  gap: 4px;
+  margin: 2px 0 0;
+}
+
+.high-scores__stat-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 0.86rem;
+}
+
+.high-scores__stat-row dt {
+  margin: 0;
+  color: color-mix(in srgb, var(--body) 86%, white 14%);
+}
+
+.high-scores__stat-row dd {
+  margin: 0;
+  font-weight: 700;
+  color: color-mix(in srgb, var(--title) 88%, #111 12%);
+  text-align: right;
+}
+
+.high-scores__empty {
+  margin: auto 0 0;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.medal {
+  display: inline-grid;
+  place-items: center;
+  min-width: 2.05rem;
+  height: 2.05rem;
+  border-radius: 999px;
+  font-size: 1.1rem;
+  border: 1px solid transparent;
+  background: #f4f4f4;
+}
+
+.medal--gold {
+  background: linear-gradient(145deg, #ffd96f, #ffb800);
+  border-color: #e5a100;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.48);
+}
+
+.medal--silver {
+  background: linear-gradient(145deg, #f2f3f5, #b6c0cb);
+  border-color: #97a3b0;
+}
+
+.medal--bronze {
+  background: linear-gradient(145deg, #efbf8d, #be7a44);
+  border-color: #9c6337;
+}
+
+.medal--none {
+  background: color-mix(in srgb, #eceff2 85%, white 15%);
+  border-color: #d7dce2;
+  color: #6d7784;
+  font-weight: 700;
+}
+
+@media (min-width: 880px) {
+  .high-scores__grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 500px) {
+  .high-scores {
+    padding: 10px;
+    gap: 10px;
+  }
+
+  .high-scores__header {
+    align-items: flex-start;
+  }
+
+  .high-scores__back {
+    padding-inline: 12px;
+    font-size: 0.84rem;
+  }
+}

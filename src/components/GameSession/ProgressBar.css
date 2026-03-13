@@ -1,0 +1,50 @@
+.progress-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-dot-gap, 0.45rem);
+  width: 100%;
+}
+
+.progress-dot {
+  width: var(--size-dot, 12px);
+  height: var(--size-dot, 12px);
+  border-radius: 999px;
+  border: 2px solid var(--color-progress-border, #0f766e);
+  background: transparent;
+  transition:
+    transform 180ms ease,
+    background-color 180ms ease,
+    border-color 180ms ease,
+    opacity 180ms ease;
+}
+
+.progress-dot--complete {
+  background: var(--color-progress-complete, #0f766e);
+  border-color: var(--color-progress-complete, #0f766e);
+}
+
+.progress-dot--current {
+  background: var(--color-progress-active, #f59e0b);
+  border-color: var(--color-progress-active, #f59e0b);
+  transform: scale(1.1);
+  animation: dotPulse 900ms ease-in-out infinite;
+}
+
+.progress-dot--upcoming {
+  opacity: 0.45;
+}
+
+@keyframes dotPulse {
+  0% {
+    transform: scale(1.06);
+  }
+
+  50% {
+    transform: scale(1.24);
+  }
+
+  100% {
+    transform: scale(1.06);
+  }
+}

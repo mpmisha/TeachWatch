@@ -1,0 +1,26 @@
+.answer-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-answer-gap, 12px);
+  width: 100%;
+}
+
+.answer-choice {
+  height: 100%;
+}
+
+.answer-choice.answer--correct {
+  background: var(--color-success, #16a34a);
+  color: var(--color-on-success, #ffffff);
+}
+
+.answer-choice.answer--incorrect {
+  background: var(--color-danger, #dc2626);
+  color: var(--color-on-danger, #ffffff);
+}
+
+@media (max-width: 520px) {
+  .answer-grid {
+    gap: var(--space-answer-gap-mobile, 10px);
+  }
+}

@@ -1,0 +1,159 @@
+.clock-svg {
+  display: block;
+  user-select: none;
+  overflow: visible;
+}
+
+.clock-face {
+  fill: none;
+}
+
+.clock-rim {
+  fill: var(--color-clock-face, #fff9eb);
+  stroke: var(--color-clock-rim, #2d3436);
+  stroke-width: 1.2;
+}
+
+.clock-tick {
+  stroke: var(--color-clock-tick, #636e72);
+  stroke-linecap: round;
+}
+
+.clock-tick--hour {
+  stroke: var(--color-clock-hour-tick, #2d3436);
+}
+
+.clock-hour-number {
+  fill: var(--color-clock-number, #2d3436);
+  font-size: 7.5px;
+  font-weight: 700;
+  font-family: var(--font-clock, 'Nunito', 'Trebuchet MS', sans-serif);
+}
+
+.clock-five-minute-label {
+  fill: var(--color-clock-label, #7f8c8d);
+  font-size: 4px;
+  font-weight: 600;
+  font-family: var(--font-clock, 'Nunito', 'Trebuchet MS', sans-serif);
+}
+
+.clock-center-dot {
+  fill: var(--color-clock-center, #2d3436);
+}
+
+.clock-hand-group {
+  transition: transform var(--transition-slow, 600ms) ease-in-out;
+  transform-origin: 50px 50px;
+}
+
+.clock-hand {
+  stroke: var(--color-clock-hand, #2d3436);
+  stroke-linecap: round;
+  transition:
+    transform var(--transition-slow, 600ms) ease-in-out,
+    stroke var(--transition-fast, 150ms) ease;
+}
+
+.clock-hand--hour {
+  stroke-width: 3;
+}
+
+.clock-hand--minute {
+  stroke-width: 2;
+}
+
+.clock-hand-cap {
+  fill: var(--color-clock-hand, #2d3436);
+  transition: fill var(--transition-fast, 150ms) ease;
+}
+
+.clock-svg.clock--sweeping .clock-hand-group {
+  transition-duration: var(--transition-sweep, 900ms);
+}
+
+.clock-svg.clock--correct {
+  animation: clock-pulse-correct 420ms ease;
+}
+
+.clock-svg.clock--correct .clock-hand {
+  stroke: var(--color-success, #00b894);
+}
+
+.clock-svg.clock--correct .clock-rim {
+  stroke: var(--color-success, #00b894);
+}
+
+.clock-svg.clock--correct .clock-hand-cap {
+  fill: var(--color-success, #00b894);
+}
+
+.clock-svg.clock--incorrect {
+  animation: clock-wiggle 420ms ease;
+}
+
+.clock-svg.clock--incorrect .clock-hand {
+  stroke: var(--color-error, #d63031);
+}
+
+.clock-svg.clock--incorrect .clock-rim {
+  stroke: var(--color-error, #d63031);
+}
+
+.clock-svg.clock--incorrect .clock-hand-cap {
+  fill: var(--color-error, #d63031);
+}
+
+@keyframes clock-pulse-correct {
+  0% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 0 rgba(0, 184, 148, 0));
+  }
+
+  50% {
+    transform: scale(1.05);
+    filter: drop-shadow(0 0 6px rgba(0, 184, 148, 0.45));
+  }
+
+  100% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 0 rgba(0, 184, 148, 0));
+  }
+}
+
+@keyframes clock-wiggle {
+  0% {
+    transform: translateX(0);
+  }
+
+  20% {
+    transform: translateX(-3px);
+  }
+
+  40% {
+    transform: translateX(3px);
+  }
+
+  60% {
+    transform: translateX(-2px);
+  }
+
+  80% {
+    transform: translateX(1px);
+  }
+
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .clock-hand-group,
+  .clock-hand {
+    transition-duration: 0ms;
+  }
+
+  .clock-svg.clock--correct,
+  .clock-svg.clock--incorrect {
+    animation: none;
+  }
+}
