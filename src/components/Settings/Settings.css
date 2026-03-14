@@ -18,6 +18,7 @@
   gap: clamp(12px, 2.4vw, 22px);
   padding-block: clamp(14px, 2.4vw, 24px);
   padding-inline: clamp(12px, 2.6vw, 28px);
+  padding-top: 60px;
   background:
     radial-gradient(circle at 15% 6%, rgba(255, 214, 157, 0.35), transparent 28%),
     radial-gradient(circle at 88% 90%, rgba(152, 226, 201, 0.22), transparent 36%),
@@ -50,10 +51,20 @@
 
 .settings__content {
   min-height: 0;
-  display: grid;
-  grid-template-rows: 1fr 1fr;
-  gap: clamp(10px, 2vw, 16px);
-  align-content: stretch;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4, 1rem);
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+@media (min-width: 600px) {
+  .settings__content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: start;
+  }
 }
 
 .settings__card {
@@ -155,23 +166,24 @@
     gap: 10px;
     padding-block: 10px;
     padding-inline: 10px;
+    padding-top: 56px;
   }
 
   .settings__header {
     align-items: flex-start;
   }
 
-  .settings__content {
-    gap: 10px;
-  }
-
   .settings__language-row {
     flex-direction: column;
     align-items: stretch;
+    gap: var(--space-3, 0.75rem);
   }
 
   .settings__segment {
-    margin-inline-start: auto;
-    margin-inline-end: auto;
+    align-self: center;
+  }
+
+  .settings__reset {
+    width: 100%;
   }
 }

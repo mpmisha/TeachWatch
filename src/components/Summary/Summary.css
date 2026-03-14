@@ -11,6 +11,7 @@
 
   min-height: 100dvh;
   padding: clamp(10px, 2.4vw, 24px);
+  padding-top: 60px;
   display: grid;
   place-items: center;
   overflow: hidden;

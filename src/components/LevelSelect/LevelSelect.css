@@ -9,6 +9,7 @@
 
   min-height: 100dvh;
   padding: clamp(12px, 2.4vw, 24px);
+  padding-top: 60px;
   overflow: hidden;
   display: grid;
   grid-template-rows: auto 1fr;
