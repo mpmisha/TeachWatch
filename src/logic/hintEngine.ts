@@ -1,26 +1,53 @@
-import type { Question, Hint } from '../types/game';
+import type { ClockFeatures, ClockTime, HintHighlight, VisualHint } from '../types/game';
 
-/**
- * Generate a contextual hint for a question based on the level and translation templates.
- *
- * @param question - The current question with a ClockTime
- * @param level - Level number (1-6)
- * @param templates - Array of 6 hint template strings from translations (t.hintLevelMessages)
- * @returns A Hint object with the filled-in text
- */
-export function generateHint(question: Question, level: number, templates: string[]): Hint {
-  const idx = Math.min(Math.max(level - 1, 0), templates.length - 1);
-  let text = templates[idx];
+function buildHourStage(time: ClockTime): HintHighlight {
+  const { hours, minutes } = time;
+  const nextHour = (hours % 12) + 1;
 
-  const { hours, minutes } = question.time;
-  const nearestFiveNum = Math.round(minutes / 5) % 12 || 12;
-  const nearestFiveMin = Math.round(minutes / 5) * 5 % 60;
+  return {
+    hand: 'hour',
+    highlightHourNumbers: minutes === 0 ? [hours] : [hours, nextHour],
+    highlightFiveMinuteLabels: [],
+  };
+}
 
-  text = text
-    .replace(/\{hour\}/g, String(hours))
-    .replace(/\{minutes\}/g, String(minutes))
-    .replace(/\{nearestFive\}/g, String(nearestFiveNum))
-    .replace(/\{nearestFiveMinutes\}/g, String(nearestFiveMin));
+function buildMinuteStage(time: ClockTime, level: number): HintHighlight {
+  const { minutes } = time;
 
-  return { text };
+  if (level === 1 || minutes === 0) {
+    return {
+      hand: 'minute',
+      highlightHourNumbers: [],
+      highlightFiveMinuteLabels: [],
+    };
+  }
+
+  const lowerFive = Math.floor(minutes / 5) * 5;
+  const upperFive = (lowerFive + 5) % 60;
+
+  const labels: number[] = [];
+
+  if (minutes % 5 === 0) {
+    if (lowerFive > 0) labels.push(lowerFive);
+  } else {
+    if (lowerFive > 0) labels.push(lowerFive);
+    if (upperFive > 0) labels.push(upperFive);
+  }
+
+  return {
+    hand: 'minute',
+    highlightHourNumbers: [],
+    highlightFiveMinuteLabels: labels,
+  };
+}
+
+export function generateVisualHint(
+  time: ClockTime,
+  level: number,
+  _clockFeatures: ClockFeatures,
+): VisualHint {
+  return {
+    stage1: buildHourStage(time),
+    stage2: buildMinuteStage(time, level),
+  };
 }

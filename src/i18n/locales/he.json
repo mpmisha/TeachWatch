@@ -59,17 +59,8 @@
 
   "settings": "הגדרות",
   "settingsTitle": "הגדרות",
-  "hintButton": "💡 רמז",
-  "hintClose": "!הבנתי",
+  "hintButton": "רמז",
   "hintsEnabled": "הצגת רמזים",
-  "hintLevelMessages": [
-    "מחוג השעות מצביע ליד ה-{hour}",
-    "מחוג השעות ליד {hour}. האם מחוג הדקות מצביע למעלה (:00) או למטה (:30)?",
-    "מחוג הדקות ליד המספר {nearestFive}. כל מספר שווה 5 דקות.",
-    "מחוג הדקות עבר את {nearestFive} ({nearestFiveMinutes} דק׳). ספרו את השנתות הנוספות!",
-    "זכרו: {hour} במחוג השעות. מחוג הדקות ליד המקום של {nearestFive}.",
-    "מחוג השעות ליד {hour}. ספרו שנתות מלמעלה עבור הדקות."
-  ],
   "language": "שפה",
   "resetScores": "איפוס כל הניקוד",
   "resetScoresConfirm": "בטוחים? זה ימחק את כל השיאים שלכם.",

@@ -1,4 +1,4 @@
-import type { ClockAnimationState, ClockFeatures, ClockTime } from '../../types/game';
+import type { ClockAnimationState, ClockFeatures, ClockTime, HintHighlight } from '../../types/game';
 import { useTranslation } from '../../i18n';
 import { ClockFace } from './ClockFace';
 import { ClockHands } from './ClockHands';
@@ -8,6 +8,7 @@ export interface ClockProps {
   time: ClockTime;
   features: ClockFeatures;
   animationState?: ClockAnimationState;
+  hintHighlight?: HintHighlight;
   size?: string;
   className?: string;
 }
@@ -16,11 +17,12 @@ export function Clock({
   time,
   features,
   animationState = 'idle',
+  hintHighlight,
   size = '300px',
   className,
 }: ClockProps) {
   const { t } = useTranslation();
-  const classes = ['clock-svg', `clock--${animationState}`, className]
+  const classes = ['clock-svg', `clock--${animationState}`, hintHighlight && 'clock--hinting', className]
     .filter(Boolean)
     .join(' ');
   const paddedMinutes = String(time.minutes).padStart(2, '0');
@@ -34,8 +36,8 @@ export function Clock({
       role="img"
       aria-label={t.clockAriaLabel(time.hours, paddedMinutes)}
     >
-      <ClockFace features={features} />
-      <ClockHands time={time} />
+      <ClockFace features={features} hintHighlight={hintHighlight} />
+      <ClockHands time={time} hintHighlight={hintHighlight} />
     </svg>
   );
 }

@@ -1,13 +1,14 @@
-import { useEffect, useState } from 'react'
-import type { ClockAnimationState, ClockFeatures, Hint, Question } from '../../types/game'
+import type { ClockAnimationState, ClockFeatures, HintHighlight, HintStage, Question } from '../../types/game'
 import { useTranslation } from '../../i18n'
 import { Clock } from '../Clock/Clock'
 import { AnswerButtons } from './AnswerButtons'
-import { HintButton, HintPopup } from './HintButton'
+import { HintButton } from './HintButton'
 
 interface QuestionViewProps {
   question: Question
-  hint: Hint | null
+  activeHighlight?: HintHighlight
+  hintStage: HintStage
+  onTriggerHint: () => void
   hintsEnabled: boolean
   clockFeatures: ClockFeatures
   animationState: ClockAnimationState
@@ -21,7 +22,9 @@ interface QuestionViewProps {
 
 export function QuestionView({
   question,
-  hint,
+  activeHighlight,
+  hintStage,
+  onTriggerHint,
   hintsEnabled,
   clockFeatures,
   animationState,
@@ -33,12 +36,7 @@ export function QuestionView({
   levelTip,
 }: QuestionViewProps) {
   const { t } = useTranslation()
-  const [hintVisible, setHintVisible] = useState(false)
   const showAnswerButtons = animationState !== 'sweeping'
-
-  useEffect(() => {
-    setHintVisible(false)
-  }, [question])
 
   return (
     <section className="question-view" aria-label={`${t.currentQuestion} ${questionNumber}`} data-level={level}>
@@ -54,13 +52,12 @@ export function QuestionView({
           time={question.time}
           features={clockFeatures}
           animationState={animationState}
+          hintHighlight={activeHighlight}
           size="clamp(220px, 48vw, 380px)"
         />
       </div>
 
-      {hintsEnabled && hint && <HintButton onClick={() => setHintVisible(true)} disabled={disabled} />}
-
-      <HintPopup text={hint?.text ?? ''} onClose={() => setHintVisible(false)} visible={hintVisible} />
+      {hintsEnabled && <HintButton onClick={onTriggerHint} disabled={disabled} active={hintStage !== 'idle'} />}
 
       <div className="question-view__answers" aria-live="polite">
         {showAnswerButtons ? (

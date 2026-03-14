@@ -1,7 +1,8 @@
-import type { ClockFeatures } from '../../types/game';
+import type { ClockFeatures, HintHighlight } from '../../types/game';
 
 export interface ClockFaceProps {
   features: ClockFeatures;
+  hintHighlight?: HintHighlight;
 }
 
 const HOUR_NUMBERS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12] as const;
@@ -15,7 +16,10 @@ function polarY(radius: number, degrees: number): number {
   return 50 - radius * Math.cos((degrees * Math.PI) / 180);
 }
 
-export function ClockFace({ features }: ClockFaceProps) {
+export function ClockFace({ features, hintHighlight }: ClockFaceProps) {
+  const hintedHourNumbers = new Set(hintHighlight?.highlightHourNumbers ?? []);
+  const hintedFiveMinLabels = new Set(hintHighlight?.highlightFiveMinuteLabels ?? []);
+
   return (
     <g className="clock-face" aria-hidden="true">
       <circle className="clock-rim" cx="50" cy="50" r="48" />
@@ -47,11 +51,32 @@ export function ClockFace({ features }: ClockFaceProps) {
         <g className="clock-hour-numbers">
           {HOUR_NUMBERS.map((value) => {
             const degrees = value * 30;
+            const hintClass = hintedHourNumbers.has(value) ? ' clock-hour-number--hint' : '';
 
             return (
               <text
                 key={value}
-                className="clock-hour-number"
+                className={`clock-hour-number${hintClass}`}
+                x={polarX(38, degrees)}
+                y={polarY(38, degrees) + 2}
+                textAnchor="middle"
+              >
+                {value}
+              </text>
+            );
+          })}
+        </g>
+      )}
+
+      {!features.showNumbers && hintedHourNumbers.size > 0 && (
+        <g className="clock-hour-numbers">
+          {HOUR_NUMBERS.filter((value) => hintedHourNumbers.has(value)).map((value) => {
+            const degrees = value * 30;
+
+            return (
+              <text
+                key={value}
+                className="clock-hour-number clock-hour-number--hint-reveal"
                 x={polarX(38, degrees)}
                 y={polarY(38, degrees) + 2}
                 textAnchor="middle"
@@ -67,11 +92,32 @@ export function ClockFace({ features }: ClockFaceProps) {
         <g className="clock-five-minute-labels">
           {FIVE_MINUTE_LABELS.map((value) => {
             const degrees = (value / 5) * 30;
+            const hintClass = hintedFiveMinLabels.has(value) ? ' clock-five-minute-label--hint' : '';
 
             return (
               <text
                 key={value}
-                className="clock-five-minute-label"
+                className={`clock-five-minute-label${hintClass}`}
+                x={polarX(32, degrees)}
+                y={polarY(32, degrees) + 1.5}
+                textAnchor="middle"
+              >
+                {value}
+              </text>
+            );
+          })}
+        </g>
+      )}
+
+      {!features.showFiveMinuteLabels && hintedFiveMinLabels.size > 0 && (
+        <g className="clock-five-minute-labels">
+          {FIVE_MINUTE_LABELS.filter((value) => hintedFiveMinLabels.has(value)).map((value) => {
+            const degrees = (value / 5) * 30;
+
+            return (
+              <text
+                key={value}
+                className="clock-five-minute-label clock-five-minute-label--hint-reveal"
                 x={polarX(32, degrees)}
                 y={polarY(32, degrees) + 1.5}
                 textAnchor="middle"

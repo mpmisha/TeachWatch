@@ -157,3 +157,110 @@
     animation: none;
   }
 }
+
+/* ===== Hint Highlighting ===== */
+
+.clock--hinting .clock-rim {
+  stroke: color-mix(in oklab, var(--color-clock-rim, #2d3436) 70%, var(--color-hint, #f9a825) 30%);
+}
+
+/* Hand glow/pulse during hint */
+.clock-hand--hint .clock-hand {
+  stroke: var(--color-hint, #f9a825);
+  stroke-width: 3.5;
+  filter: drop-shadow(0 0 4px rgba(249, 168, 37, 0.7));
+  animation: hint-hand-pulse 1.2s ease-in-out infinite;
+}
+
+.clock-hand--hint .clock-hand--minute {
+  stroke-width: 2.5;
+}
+
+/* Number glow when already visible */
+.clock-hour-number--hint {
+  fill: var(--color-hint, #f9a825);
+  font-weight: 900;
+  font-size: 8.5px;
+  animation: hint-number-glow 1.2s ease-in-out infinite;
+}
+
+.clock-five-minute-label--hint {
+  fill: var(--color-hint, #f9a825);
+  font-weight: 800;
+  font-size: 5px;
+  animation: hint-number-glow 1.2s ease-in-out infinite;
+}
+
+/* Numbers temporarily revealed by hint */
+.clock-hour-number--hint-reveal {
+  fill: var(--color-hint, #f9a825);
+  font-weight: 900;
+  font-size: 8.5px;
+  animation: hint-number-reveal 0.35s ease-out forwards, hint-number-glow 1.2s ease-in-out 0.35s infinite;
+  transform-origin: center;
+  transform-box: fill-box;
+}
+
+.clock-five-minute-label--hint-reveal {
+  fill: var(--color-hint, #f9a825);
+  font-weight: 800;
+  font-size: 5px;
+  animation: hint-number-reveal 0.35s ease-out forwards, hint-number-glow 1.2s ease-in-out 0.35s infinite;
+  transform-origin: center;
+  transform-box: fill-box;
+}
+
+@keyframes hint-hand-pulse {
+  0%,
+  100% {
+    filter: drop-shadow(0 0 3px rgba(249, 168, 37, 0.45));
+  }
+
+  50% {
+    filter: drop-shadow(0 0 8px rgba(249, 168, 37, 0.9));
+  }
+}
+
+@keyframes hint-number-glow {
+  0%,
+  100% {
+    opacity: 0.8;
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes hint-number-reveal {
+  from {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .clock-hand--hint .clock-hand {
+    animation: none;
+    filter: none;
+    stroke: var(--color-hint, #f9a825);
+  }
+
+  .clock-hour-number--hint,
+  .clock-five-minute-label--hint {
+    animation: none;
+    opacity: 1;
+  }
+
+  .clock-hour-number--hint-reveal,
+  .clock-five-minute-label--hint-reveal {
+    animation: none;
+    opacity: 1;
+  }
+}

@@ -28,9 +28,20 @@ export interface Question {
   correctIndex: number;          // 0-3 index into options[]
 }
 
-/** A contextual hint for a question */
-export interface Hint {
-  text: string;
+/** Which stage of the visual hint is active */
+export type HintStage = 'idle' | 'hour' | 'minute';
+
+/** Describes what the clock should highlight during a hint */
+export interface HintHighlight {
+  hand: 'hour' | 'minute';
+  highlightHourNumbers: number[];
+  highlightFiveMinuteLabels: number[];
+}
+
+/** Full two-stage visual hint descriptor for one question */
+export interface VisualHint {
+  stage1: HintHighlight;
+  stage2: HintHighlight;
 }
 
 /** Record of the player's answer to one question */

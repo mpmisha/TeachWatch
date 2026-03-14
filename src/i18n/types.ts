@@ -69,9 +69,7 @@ export interface TranslationStrings {
   settings: string;
   settingsTitle: string;
   hintButton: string;
-  hintClose: string;
   hintsEnabled: string;
-  hintLevelMessages: string[];
   language: string;
   resetScores: string;
   resetScoresConfirm: string;
@@ -142,9 +140,7 @@ export interface RawTranslationStrings {
   settings: string;
   settingsTitle: string;
   hintButton: string;
-  hintClose: string;
   hintsEnabled: string;
-  hintLevelMessages: string[];
   language: string;
   resetScores: string;
   resetScoresConfirm: string;

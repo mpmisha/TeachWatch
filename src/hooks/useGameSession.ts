@@ -3,15 +3,17 @@ import type {
   Answer,
   ClockAnimationState,
   ClockFeatures,
-  Hint,
+  HintHighlight,
+  HintStage,
   Question,
   SessionResult,
+  VisualHint,
 } from '../types/game'
-import { generateHint } from '../logic/hintEngine'
+import { generateVisualHint } from '../logic/hintEngine'
 import { getLevelConfig } from '../logic/levelConfig'
 import { generateQuestions } from '../logic/questionEngine'
 import { buildSessionResult } from '../logic/scoring'
-import { useTranslation } from '../i18n'
+import { useHintSequence } from './useHintSequence'
 import { useTimer } from './useTimer'
 
 const TOTAL_QUESTIONS = 10
@@ -25,7 +27,9 @@ type AnswerFeedback = {
 
 export function useGameSession(level: number): {
   currentQuestion: Question | null
-  currentHint: Hint | null
+  activeHighlight: HintHighlight | null
+  hintStage: HintStage
+  triggerHint: () => void
   questionNumber: number
   totalQuestions: number
   animationState: ClockAnimationState
@@ -35,7 +39,6 @@ export function useGameSession(level: number): {
   sessionResult: SessionResult | null
 } {
   const levelConfig = useMemo(() => getLevelConfig(level), [level])
-  const { t } = useTranslation()
   const [questions, setQuestions] = useState<Question[]>([])
   const [questionIndex, setQuestionIndex] = useState(0)
   const [animationState, setAnimationState] = useState<ClockAnimationState>('idle')
@@ -43,14 +46,16 @@ export function useGameSession(level: number): {
   const [isAnswerLocked, setIsAnswerLocked] = useState(false)
   const [sessionResult, setSessionResult] = useState<SessionResult | null>(null)
 
-  const currentHint = useMemo(() => {
+  const visualHint = useMemo<VisualHint | null>(() => {
     const question = questions[questionIndex]
     if (!question) {
       return null
     }
 
-    return generateHint(question, level, t.hintLevelMessages)
-  }, [questions, questionIndex, level, t.hintLevelMessages])
+    return generateVisualHint(question.time, level, levelConfig.clockFeatures)
+  }, [questions, questionIndex, level, levelConfig.clockFeatures])
+
+  const { hintStage, activeHighlight, triggerHint, cancelHint } = useHintSequence(visualHint)
 
   const feedbackTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const sweepTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
@@ -73,6 +78,7 @@ export function useGameSession(level: number): {
 
   useEffect(() => {
     clearPendingTimeouts()
+    cancelHint()
 
     const generatedQuestions = generateQuestions(levelConfig, TOTAL_QUESTIONS)
     setQuestions(generatedQuestions)
@@ -89,9 +95,10 @@ export function useGameSession(level: number): {
 
     return () => {
       clearPendingTimeouts()
+      cancelHint()
       stop()
     }
-  }, [clearPendingTimeouts, levelConfig, reset, start, stop])
+  }, [cancelHint, clearPendingTimeouts, levelConfig, reset, start, stop])
 
   const handleAnswer = useCallback(
     (selectedIndex: number) => {
@@ -133,6 +140,7 @@ export function useGameSession(level: number): {
         const nextQuestionIndex = questionIndex + 1
         setAnimationState('sweeping')
         setAnswerFeedback(null)
+        cancelHint()
         setQuestionIndex(nextQuestionIndex)
 
         sweepTimeoutRef.current = setTimeout(() => {
@@ -142,12 +150,14 @@ export function useGameSession(level: number): {
         }, SWEEP_DELAY_MS)
       }, FEEDBACK_DELAY_MS)
     },
-    [isAnswerLocked, level, questionIndex, questions, sessionResult, stop],
+    [cancelHint, isAnswerLocked, level, questionIndex, questions, sessionResult, stop],
   )
 
   return {
     currentQuestion: questions[questionIndex] ?? null,
-    currentHint,
+    activeHighlight,
+    hintStage,
+    triggerHint,
     questionNumber: Math.min(questionIndex + 1, TOTAL_QUESTIONS),
     totalQuestions: TOTAL_QUESTIONS,
     animationState,

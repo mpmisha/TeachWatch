@@ -26,6 +26,7 @@
   --color-clock-tick: #636e72;
   --color-clock-number: #2d3436;
   --color-clock-label: #0984e3;     /* 5-minute helper labels in blue */
+  --color-hint: #f9a825;            /* Amber — hint highlighting */
 
   /* Accents (for level cards, medals, etc.) */
   --color-gold: #fdcb6e;

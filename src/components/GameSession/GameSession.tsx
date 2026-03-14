@@ -20,7 +20,9 @@ export function GameSession({ level, hintsEnabled, onComplete, onQuit }: GameSes
   const { t } = useTranslation()
   const {
     currentQuestion,
-    currentHint,
+    activeHighlight,
+    hintStage,
+    triggerHint,
     questionNumber,
     totalQuestions,
     animationState,
@@ -78,7 +80,9 @@ export function GameSession({ level, hintsEnabled, onComplete, onQuit }: GameSes
             questionNumber={questionNumber}
             level={level}
             levelTip={levelTip}
-            hint={currentHint}
+            activeHighlight={activeHighlight ?? undefined}
+            hintStage={hintStage}
+            onTriggerHint={triggerHint}
             hintsEnabled={hintsEnabled}
           />
         ) : (

@@ -59,17 +59,8 @@
 
   "settings": "Settings",
   "settingsTitle": "Settings",
-  "hintButton": "Hint 💡",
-  "hintClose": "Got it!",
+  "hintButton": "Hint",
   "hintsEnabled": "Show Hints",
-  "hintLevelMessages": [
-    "The hour hand is pointing near the {hour}",
-    "The hour hand is near {hour}. Is the minute hand pointing up (:00) or down (:30)?",
-    "The minute hand is near the number {nearestFive}. Each number means 5 minutes.",
-    "The minute hand is past {nearestFive} ({nearestFiveMinutes} min). Count the extra ticks!",
-    "Remember: {hour} on the hour hand. The minute hand is near where {nearestFive} would be.",
-    "The hour hand is near {hour}. Count ticks from the top for the minutes."
-  ],
   "language": "Language",
   "resetScores": "Reset All Scores",
   "resetScoresConfirm": "Are you sure? This will erase all your high scores.",
