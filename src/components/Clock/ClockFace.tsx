@@ -133,3 +133,43 @@ export function ClockFace({ features, hintHighlight }: ClockFaceProps) {
     </g>
   );
 }
+
+export interface ClockHintOverlayProps {
+  hintHighlight: HintHighlight;
+}
+
+export function ClockHintOverlay({ hintHighlight }: ClockHintOverlayProps) {
+  return (
+    <g className="clock-hint-overlay" pointerEvents="none" aria-hidden="true">
+      {hintHighlight.highlightHourNumbers.map((value) => {
+        const degrees = value * 30;
+        const cx = polarX(38, degrees);
+        const cy = polarY(38, degrees);
+
+        return (
+          <g key={`hour-${value}`} className="hint-overlay-number">
+            <circle className="hint-halo" cx={cx} cy={cy} r="5.5" />
+            <text className="hint-number hint-number--hour" x={cx} y={cy + 2.5} textAnchor="middle">
+              {value}
+            </text>
+          </g>
+        );
+      })}
+
+      {hintHighlight.highlightFiveMinuteLabels.map((value) => {
+        const degrees = (value / 5) * 30;
+        const cx = polarX(32, degrees);
+        const cy = polarY(32, degrees);
+
+        return (
+          <g key={`min-${value}`} className="hint-overlay-number">
+            <circle className="hint-halo" cx={cx} cy={cy} r="4" />
+            <text className="hint-number hint-number--minute" x={cx} y={cy + 1.5} textAnchor="middle">
+              {value}
+            </text>
+          </g>
+        );
+      })}
+    </g>
+  );
+}

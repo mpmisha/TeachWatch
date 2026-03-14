@@ -9,11 +9,15 @@ export interface ClockHandsProps {
 export function ClockHands({ time, hintHighlight }: ClockHandsProps) {
   const minuteDegrees = minuteRotation(time.minutes);
   const hourDegrees = hourRotation(time.hours, time.minutes);
+  const hourHintClass =
+    hintHighlight?.hand === 'hour' ? ' clock-hand--hint' : hintHighlight ? ' clock-hand--dimmed' : '';
+  const minuteHintClass =
+    hintHighlight?.hand === 'minute' ? ' clock-hand--hint' : hintHighlight ? ' clock-hand--dimmed' : '';
 
   return (
     <g className="clock-hands" aria-hidden="true">
       <g
-        className={`clock-hand-group${hintHighlight?.hand === 'hour' ? ' clock-hand--hint' : ''}`}
+        className={`clock-hand-group${hourHintClass}`}
         style={{
           transform: `rotate(${hourDegrees}deg)`,
           transformOrigin: '50px 50px',
@@ -23,7 +27,7 @@ export function ClockHands({ time, hintHighlight }: ClockHandsProps) {
       </g>
 
       <g
-        className={`clock-hand-group${hintHighlight?.hand === 'minute' ? ' clock-hand--hint' : ''}`}
+        className={`clock-hand-group${minuteHintClass}`}
         style={{
           // Known limitation: CSS can pick the long arc near 0/360 transitions.
           transform: `rotate(${minuteDegrees}deg)`,

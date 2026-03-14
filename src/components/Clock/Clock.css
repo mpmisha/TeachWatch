@@ -160,87 +160,149 @@
 
 /* ===== Hint Highlighting ===== */
 
-.clock--hinting .clock-rim {
-  stroke: color-mix(in oklab, var(--color-clock-rim, #2d3436) 70%, var(--color-hint, #f9a825) 30%);
+/* Global dimming when hint is active */
+.clock--hinting .clock-tick,
+.clock--hinting .clock-center-dot {
+  opacity: 0.2;
+  transition: opacity 0.4s ease;
 }
 
-/* Hand glow/pulse during hint */
+.clock--hinting .clock-rim {
+  stroke: color-mix(in oklab, var(--color-clock-rim, #2d3436) 60%, var(--color-hint, #f9a825) 40%);
+  transition: stroke 0.4s ease;
+}
+
+/* Dim non-hinted numbers in base layer */
+.clock--hinting .clock-hour-number:not(.clock-hour-number--hint),
+.clock--hinting .clock-five-minute-label:not(.clock-five-minute-label--hint) {
+  opacity: 0.15;
+  transition: opacity 0.4s ease;
+}
+
+/* Base layer hinted numbers (still rendered, but overlay is on top) */
+.clock-hour-number--hint,
+.clock-five-minute-label--hint {
+  fill: var(--color-hint, #f9a825);
+  font-weight: 900;
+  opacity: 0.4;
+}
+
+/* Revealed numbers in base layer (for levels that hide numbers) */
+.clock-hour-number--hint-reveal,
+.clock-five-minute-label--hint-reveal {
+  fill: var(--color-hint, #f9a825);
+  font-weight: 900;
+  opacity: 0;
+}
+
+/* Dim non-active hand */
+.clock-hand--dimmed .clock-hand {
+  opacity: 0.2;
+  transition: opacity 0.4s ease;
+}
+
+/* Active hand glow - dramatic multi-layer */
 .clock-hand--hint .clock-hand {
-  stroke: var(--color-hint, #f9a825);
-  stroke-width: 3.5;
-  filter: drop-shadow(0 0 4px rgba(249, 168, 37, 0.7));
-  animation: hint-hand-pulse 1.2s ease-in-out infinite;
+  stroke: url(#hint-hand-grad);
+  filter: url(#hint-glow);
+  animation: hint-hand-throb 1.5s ease-in-out infinite alternate;
+  opacity: 1;
+}
+
+.clock-hand--hint .clock-hand--hour {
+  stroke-width: 4.5;
 }
 
 .clock-hand--hint .clock-hand--minute {
-  stroke-width: 2.5;
+  stroke-width: 3;
 }
 
-/* Number glow when already visible */
-.clock-hour-number--hint {
+/* Overlay: number halo (glowing circle behind number) */
+.hint-halo {
   fill: var(--color-hint, #f9a825);
-  font-weight: 900;
-  font-size: 8.5px;
-  animation: hint-number-glow 1.2s ease-in-out infinite;
-}
-
-.clock-five-minute-label--hint {
-  fill: var(--color-hint, #f9a825);
-  font-weight: 800;
-  font-size: 5px;
-  animation: hint-number-glow 1.2s ease-in-out infinite;
-}
-
-/* Numbers temporarily revealed by hint */
-.clock-hour-number--hint-reveal {
-  fill: var(--color-hint, #f9a825);
-  font-weight: 900;
-  font-size: 8.5px;
-  animation: hint-number-reveal 0.35s ease-out forwards, hint-number-glow 1.2s ease-in-out 0.35s infinite;
+  filter: url(#hint-glow);
+  opacity: 0;
   transform-origin: center;
   transform-box: fill-box;
+  animation:
+    hint-halo-pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards,
+    hint-halo-breathe 1.5s ease-in-out 0.5s infinite alternate;
 }
 
-.clock-five-minute-label--hint-reveal {
-  fill: var(--color-hint, #f9a825);
-  font-weight: 800;
-  font-size: 5px;
-  animation: hint-number-reveal 0.35s ease-out forwards, hint-number-glow 1.2s ease-in-out 0.35s infinite;
+/* Overlay: number text (white with dark outline for readability) */
+.hint-number {
+  font-family: var(--font-clock, 'Nunito', 'Trebuchet MS', sans-serif);
+  fill: #ffffff;
+  stroke: #3e2723;
+  stroke-width: 0.4px;
+  paint-order: stroke fill;
+  font-weight: 900;
   transform-origin: center;
   transform-box: fill-box;
+  opacity: 0;
+  animation: hint-number-pop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
 }
 
-@keyframes hint-hand-pulse {
-  0%,
+.hint-number--hour {
+  font-size: 9px;
+}
+
+.hint-number--minute {
+  font-size: 5.5px;
+}
+
+/* Hand throb - dramatic pulse */
+@keyframes hint-hand-throb {
+  0% {
+    filter: url(#hint-glow) drop-shadow(0 0 2px rgba(249, 168, 37, 0.6));
+  }
+
   100% {
-    filter: drop-shadow(0 0 3px rgba(249, 168, 37, 0.45));
-  }
-
-  50% {
-    filter: drop-shadow(0 0 8px rgba(249, 168, 37, 0.9));
+    filter: url(#hint-glow) drop-shadow(0 0 6px #ffeb3b);
   }
 }
 
-@keyframes hint-number-glow {
-  0%,
-  100% {
-    opacity: 0.8;
-  }
-
-  50% {
-    opacity: 1;
-  }
-}
-
-@keyframes hint-number-reveal {
-  from {
+/* Halo pops in and grows */
+@keyframes hint-halo-pop {
+  0% {
+    transform: scale(0);
     opacity: 0;
-    transform: scale(0.6);
   }
 
-  to {
-    opacity: 1;
+  100% {
     transform: scale(1);
+    opacity: 0.7;
+  }
+}
+
+/* Halo breathes gently */
+@keyframes hint-halo-breathe {
+  0% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+
+  100% {
+    transform: scale(1.15);
+    opacity: 0.9;
+  }
+}
+
+/* Number pops in with overshoot */
+@keyframes hint-number-pop {
+  0% {
+    transform: scale(0.4);
+    opacity: 0;
+  }
+
+  70% {
+    transform: scale(1.3);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(1.15);
+    opacity: 1;
   }
 }
 
@@ -252,15 +314,26 @@
     stroke: var(--color-hint, #f9a825);
   }
 
-  .clock-hour-number--hint,
-  .clock-five-minute-label--hint {
-    animation: none;
-    opacity: 1;
+  .clock-hand--dimmed .clock-hand {
+    transition: none;
   }
 
-  .clock-hour-number--hint-reveal,
-  .clock-five-minute-label--hint-reveal {
+  .hint-halo {
+    animation: none;
+    opacity: 0.7;
+    transform: scale(1);
+  }
+
+  .hint-number {
     animation: none;
     opacity: 1;
+    transform: scale(1.15);
+  }
+
+  .clock--hinting .clock-tick,
+  .clock--hinting .clock-center-dot,
+  .clock--hinting .clock-hour-number:not(.clock-hour-number--hint),
+  .clock--hinting .clock-five-minute-label:not(.clock-five-minute-label--hint) {
+    transition: none;
   }
 }
