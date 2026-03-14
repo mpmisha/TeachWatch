@@ -3,12 +3,15 @@ import type {
   Answer,
   ClockAnimationState,
   ClockFeatures,
+  Hint,
   Question,
   SessionResult,
 } from '../types/game'
+import { generateHint } from '../logic/hintEngine'
 import { getLevelConfig } from '../logic/levelConfig'
 import { generateQuestions } from '../logic/questionEngine'
 import { buildSessionResult } from '../logic/scoring'
+import { useTranslation } from '../i18n'
 import { useTimer } from './useTimer'
 
 const TOTAL_QUESTIONS = 10
@@ -22,6 +25,7 @@ type AnswerFeedback = {
 
 export function useGameSession(level: number): {
   currentQuestion: Question | null
+  currentHint: Hint | null
   questionNumber: number
   totalQuestions: number
   animationState: ClockAnimationState
@@ -31,12 +35,22 @@ export function useGameSession(level: number): {
   sessionResult: SessionResult | null
 } {
   const levelConfig = useMemo(() => getLevelConfig(level), [level])
+  const { t } = useTranslation()
   const [questions, setQuestions] = useState<Question[]>([])
   const [questionIndex, setQuestionIndex] = useState(0)
   const [animationState, setAnimationState] = useState<ClockAnimationState>('idle')
   const [answerFeedback, setAnswerFeedback] = useState<AnswerFeedback | null>(null)
   const [isAnswerLocked, setIsAnswerLocked] = useState(false)
   const [sessionResult, setSessionResult] = useState<SessionResult | null>(null)
+
+  const currentHint = useMemo(() => {
+    const question = questions[questionIndex]
+    if (!question) {
+      return null
+    }
+
+    return generateHint(question, level, t.hintLevelMessages)
+  }, [questions, questionIndex, level, t.hintLevelMessages])
 
   const feedbackTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const sweepTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
@@ -133,6 +147,7 @@ export function useGameSession(level: number): {
 
   return {
     currentQuestion: questions[questionIndex] ?? null,
+    currentHint,
     questionNumber: Math.min(questionIndex + 1, TOTAL_QUESTIONS),
     totalQuestions: TOTAL_QUESTIONS,
     animationState,

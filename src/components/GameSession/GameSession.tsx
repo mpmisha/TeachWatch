@@ -11,14 +11,16 @@ import './GameSession.css'
 
 interface GameSessionProps {
   level: number
+  hintsEnabled: boolean
   onComplete: (result: SessionResult) => void
   onQuit: () => void
 }
 
-export function GameSession({ level, onComplete, onQuit }: GameSessionProps) {
+export function GameSession({ level, hintsEnabled, onComplete, onQuit }: GameSessionProps) {
   const { t } = useTranslation()
   const {
     currentQuestion,
+    currentHint,
     questionNumber,
     totalQuestions,
     animationState,
@@ -76,6 +78,8 @@ export function GameSession({ level, onComplete, onQuit }: GameSessionProps) {
             questionNumber={questionNumber}
             level={level}
             levelTip={levelTip}
+            hint={currentHint}
+            hintsEnabled={hintsEnabled}
           />
         ) : (
           <div className="game-session__loading">{t.preparingQuestions}</div>

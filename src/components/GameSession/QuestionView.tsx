@@ -1,10 +1,14 @@
-import type { ClockAnimationState, ClockFeatures, Question } from '../../types/game'
+import { useEffect, useState } from 'react'
+import type { ClockAnimationState, ClockFeatures, Hint, Question } from '../../types/game'
 import { useTranslation } from '../../i18n'
 import { Clock } from '../Clock/Clock'
 import { AnswerButtons } from './AnswerButtons'
+import { HintButton, HintPopup } from './HintButton'
 
 interface QuestionViewProps {
   question: Question
+  hint: Hint | null
+  hintsEnabled: boolean
   clockFeatures: ClockFeatures
   animationState: ClockAnimationState
   onAnswer: (index: number) => void
@@ -17,6 +21,8 @@ interface QuestionViewProps {
 
 export function QuestionView({
   question,
+  hint,
+  hintsEnabled,
   clockFeatures,
   animationState,
   onAnswer,
@@ -27,7 +33,12 @@ export function QuestionView({
   levelTip,
 }: QuestionViewProps) {
   const { t } = useTranslation()
+  const [hintVisible, setHintVisible] = useState(false)
   const showAnswerButtons = animationState !== 'sweeping'
+
+  useEffect(() => {
+    setHintVisible(false)
+  }, [question])
 
   return (
     <section className="question-view" aria-label={`${t.currentQuestion} ${questionNumber}`} data-level={level}>
@@ -46,6 +57,10 @@ export function QuestionView({
           size="clamp(220px, 48vw, 380px)"
         />
       </div>
+
+      {hintsEnabled && hint && <HintButton onClick={() => setHintVisible(true)} disabled={disabled} />}
+
+      <HintPopup text={hint?.text ?? ''} onClose={() => setHintVisible(false)} visible={hintVisible} />
 
       <div className="question-view__answers" aria-live="polite">
         {showAnswerButtons ? (

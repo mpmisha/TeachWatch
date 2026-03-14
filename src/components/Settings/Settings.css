@@ -139,6 +139,30 @@
   outline-offset: 2px;
 }
 
+.settings__toggle-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 0;
+}
+
+.settings__toggle-label {
+  font-size: clamp(0.98rem, 2.1vw, 1.1rem);
+  font-weight: 700;
+  color: var(--settings-muted);
+  text-align: start;
+}
+
+.settings__toggle-segment {
+  align-self: center;
+}
+
+.settings__toggle-btn {
+  min-width: 64px;
+  min-height: var(--touch-min, 48px);
+}
+
 .settings__reset {
   align-self: end;
   background: linear-gradient(145deg, var(--settings-error), var(--settings-error-strong));
@@ -174,6 +198,12 @@
   }
 
   .settings__language-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--space-3, 0.75rem);
+  }
+
+  .settings__toggle-row {
     flex-direction: column;
     align-items: stretch;
     gap: var(--space-3, 0.75rem);

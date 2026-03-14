@@ -6,11 +6,13 @@ import './Settings.css';
 interface SettingsProps {
   onBack: () => void;
   onResetScores: () => void;
+  hintsEnabled: boolean;
+  onToggleHints: () => void;
 }
 
 type ResetState = 'idle' | 'confirm' | 'done';
 
-export default function Settings({ onBack, onResetScores }: SettingsProps) {
+export default function Settings({ onBack, onResetScores, hintsEnabled, onToggleHints }: SettingsProps) {
   const { t, language, setLanguage, dir } = useTranslation();
   const [resetState, setResetState] = useState<ResetState>('idle');
   const confirmTimeoutRef = useRef<number | null>(null);
@@ -108,6 +110,35 @@ export default function Settings({ onBack, onResetScores }: SettingsProps) {
                 onClick={() => setLanguage('he')}
               >
                 עב
+              </button>
+            </div>
+          </div>
+        </article>
+
+        <article className="settings__card" aria-labelledby="settings-hints-title">
+          <h2 id="settings-hints-title" className="settings__card-title">
+            {t.hintsEnabled}
+          </h2>
+
+          <div className="settings__toggle-row">
+            <span className="settings__toggle-label">{t.hintsEnabled}</span>
+
+            <div className="settings__segment settings__toggle-segment" role="group" aria-label={t.hintsEnabled}>
+              <button
+                type="button"
+                className={`settings__segment-btn settings__toggle-btn ${hintsEnabled ? 'is-active' : ''}`}
+                aria-pressed={hintsEnabled}
+                onClick={onToggleHints}
+              >
+                ON
+              </button>
+              <button
+                type="button"
+                className={`settings__segment-btn settings__toggle-btn ${hintsEnabled ? '' : 'is-active'}`}
+                aria-pressed={!hintsEnabled}
+                onClick={onToggleHints}
+              >
+                OFF
               </button>
             </div>
           </div>

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import LevelSelect from './components/LevelSelect/LevelSelect';
 import LevelIntro from './components/LevelIntro/LevelIntro';
 import GameSession from './components/GameSession/GameSession';
@@ -11,6 +11,8 @@ import { getLevelConfig } from './logic/levelConfig';
 import type { SessionResult, View } from './types/game';
 import './App.css';
 
+const HINTS_STORAGE_KEY = 'teachwatch-hints-enabled';
+
 function App() {
   const { dir, t } = useTranslation();
   const { highScores, updateHighScore, resetHighScores } = useHighScores();
@@ -18,6 +20,18 @@ function App() {
   const [selectedLevel, setSelectedLevel] = useState(1);
   const [lastResult, setLastResult] = useState<SessionResult | null>(null);
   const [gameSessionKey, setGameSessionKey] = useState(0);
+  const [hintsEnabled, setHintsEnabled] = useState(true);
+
+  useEffect(() => {
+    try {
+      const saved = window.localStorage.getItem(HINTS_STORAGE_KEY);
+      if (saved === 'false') {
+        setHintsEnabled(false);
+      }
+    } catch {
+      // Ignore storage read issues and keep default hints setting.
+    }
+  }, []);
 
   const startGameForLevel = (level: number) => {
     setSelectedLevel(level);
@@ -38,6 +52,20 @@ function App() {
   const handleTryAgain = () => {
     setGameSessionKey((prev) => prev + 1);
     setCurrentView('game');
+  };
+
+  const handleToggleHints = () => {
+    setHintsEnabled((prev) => {
+      const next = !prev;
+
+      try {
+        window.localStorage.setItem(HINTS_STORAGE_KEY, String(next));
+      } catch {
+        // Ignore storage write issues and keep in-memory hints setting.
+      }
+
+      return next;
+    });
   };
 
   const clockFeatures = getLevelConfig(selectedLevel).clockFeatures;
@@ -68,6 +96,7 @@ function App() {
         <GameSession
           key={gameSessionKey}
           level={selectedLevel}
+          hintsEnabled={hintsEnabled}
           onComplete={handleSessionComplete}
           onQuit={() => setCurrentView('levelSelect')}
         />
@@ -97,6 +126,8 @@ function App() {
         <Settings
           onBack={() => setCurrentView('levelSelect')}
           onResetScores={resetHighScores}
+          hintsEnabled={hintsEnabled}
+          onToggleHints={handleToggleHints}
         />
       );
       break;

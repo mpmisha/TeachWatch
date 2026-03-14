@@ -1,4 +1,4 @@
-import { useEffect, useId, useRef } from 'react'
+import { useEffect, useId, useRef, type KeyboardEvent as ReactKeyboardEvent } from 'react'
 import { useTranslation } from '../../i18n'
 import Button from '../common/Button'
 import './HintButton.css'
@@ -27,7 +27,7 @@ export function HintButton({ onClick, disabled }: HintButtonProps) {
 
 export function HintPopup({ text, onClose, visible }: HintPopupProps) {
   const { t } = useTranslation()
-  const closeButtonRef = useRef<HTMLButtonElement | null>(null)
+  const dialogRef = useRef<HTMLDivElement | null>(null)
   const previouslyFocusedRef = useRef<HTMLElement | null>(null)
   const titleId = useId()
 
@@ -38,7 +38,7 @@ export function HintPopup({ text, onClose, visible }: HintPopupProps) {
 
     previouslyFocusedRef.current = document.activeElement instanceof HTMLElement ? document.activeElement : null
 
-    const handleKeyDown = (event: KeyboardEvent) => {
+    const handleKeyDown = (event: globalThis.KeyboardEvent) => {
       if (event.key === 'Escape') {
         event.preventDefault()
         onClose()
@@ -46,7 +46,7 @@ export function HintPopup({ text, onClose, visible }: HintPopupProps) {
     }
 
     window.addEventListener('keydown', handleKeyDown)
-    closeButtonRef.current?.focus()
+    dialogRef.current?.querySelector<HTMLButtonElement>('.hint-popup__close')?.focus()
 
     return () => {
       window.removeEventListener('keydown', handleKeyDown)
@@ -54,22 +54,24 @@ export function HintPopup({ text, onClose, visible }: HintPopupProps) {
     }
   }, [onClose, visible])
 
-  const handleDialogKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+  const handleDialogKeyDown = (event: ReactKeyboardEvent<HTMLDivElement>) => {
     if (event.key !== 'Tab') {
       return
     }
 
     event.preventDefault()
-    closeButtonRef.current?.focus()
+    dialogRef.current?.querySelector<HTMLButtonElement>('.hint-popup__close')?.focus()
   }
 
   return (
     <div
       className={`hint-popup__backdrop ${visible ? 'hint-popup--visible' : ''}`}
       aria-hidden={!visible}
+      hidden={!visible}
       onClick={onClose}
     >
       <div
+        ref={dialogRef}
         className="hint-popup__card"
         role="dialog"
         aria-modal="true"
@@ -84,14 +86,9 @@ export function HintPopup({ text, onClose, visible }: HintPopupProps) {
 
         <p className="hint-popup__text">{text}</p>
 
-        <button
-          ref={closeButtonRef}
-          type="button"
-          className="tw-button tw-button--primary hint-popup__close"
-          onClick={onClose}
-        >
+        <Button variant="primary" onClick={onClose} className="hint-popup__close">
           {t.hintClose}
-        </button>
+        </Button>
       </div>
     </div>
   )
