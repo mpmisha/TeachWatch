@@ -11,10 +11,9 @@ Teach children to read analog clocks through progressive levels, visual hints, a
 
 <br/>
 
-| Hebrew (RTL) | English (LTR) |
+| Level Select | Game Session |
 |:---:|:---:|
-| ![Level Select — Hebrew](screenshots/web/01-level-select-he.png) | ![Level Select — English](screenshots/web/05-level-select-en.png) |
-| ![Game Session — Hebrew](screenshots/web/02-game-session-he.png) | ![Game Session — English](screenshots/web/06-game-session-en.png) |
+| ![Level Select](screenshots/level-select.png) | ![Game Session](screenshots/game-session.png) |
 
 </div>
 
@@ -205,32 +204,17 @@ Agent definitions live in `.github/agents/`, with reusable skills in `.github/sk
 
 ## 📸 Screenshots
 
-<details>
-<summary><strong>Desktop — Hebrew (RTL)</strong></summary>
+### Desktop
 
-| Level Select | Game Session | High Scores | Settings |
-|:---:|:---:|:---:|:---:|
-| ![](screenshots/web/01-level-select-he.png) | ![](screenshots/web/02-game-session-he.png) | ![](screenshots/web/03-high-scores-he.png) | ![](screenshots/web/04-settings-he.png) |
+| Level Select | Game Session |
+|:---:|:---:|
+| ![Level Select](screenshots/level-select.png) | ![Game Session](screenshots/game-session.png) |
 
-</details>
+### Mobile
 
-<details>
-<summary><strong>Desktop — English (LTR)</strong></summary>
-
-| Level Select | Game Session | High Scores | Settings |
-|:---:|:---:|:---:|:---:|
-| ![](screenshots/web/05-level-select-en.png) | ![](screenshots/web/06-game-session-en.png) | ![](screenshots/web/07-high-scores-en.png) | ![](screenshots/web/08-settings-en.png) |
-
-</details>
-
-<details>
-<summary><strong>Mobile</strong></summary>
-
-| Level Select (HE) | Game Session (HE) | Level Select (EN) | Game Session (EN) |
-|:---:|:---:|:---:|:---:|
-| ![](screenshots/mobile/01-level-select-he.png) | ![](screenshots/mobile/02-game-session-he.png) | ![](screenshots/mobile/05-level-select-en.png) | ![](screenshots/mobile/06-game-session-en.png) |
-
-</details>
+| Level Select | Game Session |
+|:---:|:---:|
+| ![Level Select Mobile](screenshots/level-select-mobile.png) | ![Game Session Mobile](screenshots/game-session-mobile.png) |
 
 ## 📄 License
 
