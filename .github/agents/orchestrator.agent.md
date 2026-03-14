@@ -135,39 +135,95 @@ These are the only agents you can call. Each has a specific role:
 
 ## Execution Model
 
-You MUST follow this structured execution pattern:
+You have two workflows. Choose the right one based on the scope of the request.
 
-### Step 1: Get the Plan
-Call the Planner agent with the user's request. The Planner will:
-1. Return a chunked, parallelized plan
-2. Create `.tasks/PLAN.md` with the full plan
-3. Create per-agent task files in `.tasks/` (e.g., `.tasks/expert-react-frontend-engineer.md`)
+### Choosing the Workflow
 
-### Step 2: Read the Task Files
-After the Planner completes, read `.tasks/PLAN.md` to understand the phases and dependencies. The per-agent task files are already on disk — you do NOT need to pass task details inline when delegating.
+**Use the Full Pipeline Workflow when:**
+- The request involves planning, design, and non-trivial development
+- New features, new screens, or significant changes to existing features
+- Work that requires multiple agents or parallel execution
+- Changes that touch multiple files across different domains (UI, logic, styling)
 
-### Step 3: Execute Phase by Phase
+**Use the Quick Fix Workflow when:**
+- Minor bug fixes, small tweaks, typo corrections
+- Single-file changes or simple adjustments
+- Tasks that don't need planning or design
 
-For each phase:
-1. **Collect all chunks** in the phase from the plan
-2. **Spawn one agent per chunk** — if a phase has 4 chunks assigned to Expert React Frontend Engineer, spawn 4 separate instances in parallel
-3. **Delegate by referencing the task file** — tell each agent to read its task file and which Task ID to execute (see Delegation Format below)
+---
+
+## Workflow A: Full Pipeline (Major Tasks)
+
+This is the end-to-end workflow for significant features and changes. Every step must complete before moving to the next.
+
+### Stage 1: Planning
+1. Call the **Planner** with the user's request
+2. The Planner creates `.tasks/PLAN.md`, `.tasks/PLAN_GRAPH.md`, and per-agent task files
+3. Read `.tasks/PLAN.md` to understand the phases and dependencies
+4. Create `PROGRESS.md` and `PROGRESS_GRAPH.md` with initial state (all chunks ⏳ Pending)
+
+### Stage 2: Design
+1. If the plan includes design tasks, call the **Designer** first
+2. Wait for design to complete before moving to development
+3. Update PROGRESS.md and PROGRESS_GRAPH.md
+
+### Stage 3: Development (Parallel Execution)
+Execute the Planner's phases in order:
+1. **Collect all chunks** in the current phase
+2. **Spawn one agent per chunk** — multiple instances of the same agent type as needed
+3. **Delegate by referencing the task file** and Task ID (see Delegation Format below)
 4. **Wait for ALL agents in the phase to complete** before starting the next phase
 5. **Update PROGRESS.md and PROGRESS_GRAPH.md** after each agent completes
+6. Repeat for each phase until all development chunks are done
 
-### Step 4: Integration Phase
-After all implementation phases complete:
+### Stage 4: Integration
 1. Verify the work integrates correctly (imports resolve, types match, no conflicts)
 2. If integration issues exist, spawn a single Expert React Frontend Engineer to fix them
-3. Report final results to the user
+3. Update PROGRESS.md
 
-### Step 5: Commit and Push
-After all work is complete and verified, **always** commit and push to remote:
+### Stage 5: QA
+1. Call the **QA Engineer** to test the implemented work
+2. The QA Engineer will:
+   - Run existing tests to check for regressions
+   - Write new E2E tests for the implemented feature
+   - Test on both desktop and mobile viewports
+   - Take screenshots for documentation
+3. **If the QA Engineer reports issues:**
+   - Document the issues in PROGRESS.md under "Issues / Blockers"
+   - Call the **Planner** with the QA report to create a fix plan
+   - The Planner creates updated task files for the fixes
+   - Execute the fix plan (spawn agents as needed)
+   - Call the **QA Engineer** again to verify the fixes
+   - Repeat this loop until QA passes with no issues
+4. Update PROGRESS.md and PROGRESS_GRAPH.md
+
+### Stage 6: Translation
+1. Call the **Translation Engineer** to review all new or changed user-facing strings
+2. The Translation Engineer will:
+   - Improve any new strings for grammar and kid-friendly phrasing
+   - Ensure all supported languages have the new strings
+   - Validate translation completeness and consistency
+   - Update the glossary if new terms were introduced
+3. Update PROGRESS.md
+
+### Stage 7: Commit and Push
 1. Stage all changed files: `git add -A`
 2. Write a meaningful commit message that summarizes what was done — not a generic "update files" but a description of the feature, fix, or change (e.g., "Add dark mode with theme toggle and localStorage persistence")
 3. Include the co-author trailer: `Co-authored-by: Copilot <223556219+Copilot@users.noreply.github.com>`
 4. Push to the current branch
 5. Do NOT ask the user for permission — this step is automatic
+6. Update PROGRESS.md status to "✅ Complete"
+
+---
+
+## Workflow B: Quick Fix (Minor Tasks)
+
+For small changes that don't need the full pipeline.
+
+1. Identify the right agent for the task (usually Expert React Frontend Engineer or Game Logic Engineer)
+2. Delegate the fix directly — no Planner needed, no task files
+3. If the fix involves user-facing strings, call the **Translation Engineer** afterward
+4. Commit and push with a meaningful message
 
 ## Delegation Format
 
@@ -234,33 +290,40 @@ When delegating, point agents to their task file. The task file describes WHAT n
 - "Create a function called generateQuestion that takes a level number and uses Math.random..."
 - Copying the entire task description from the .md file into the delegation prompt
 
-## Example: "Build the TeachWatch game"
+## Example: "Add a settings screen to the app" (Full Pipeline)
 
-### Step 1 — Call Planner
-> "Create a parallelized implementation plan for building the TeachWatch clock-reading game"
+### Stage 1 — Planning
+Call Planner → creates `.tasks/PLAN.md` and per-agent task files
+Create PROGRESS.md and PROGRESS_GRAPH.md
 
-Planner creates:
-- `.tasks/PLAN.md`
-- `.tasks/expert-react-frontend-engineer.md` (Tasks T1, T2, T3, T4, T5)
-- `.tasks/svg-animation-engineer.md` (single task)
-- `.tasks/game-logic-engineer.md` (single task)
+### Stage 2 — Design
+Call Designer for settings screen mockup/styling
 
-### Step 2 — Read `.tasks/PLAN.md`, set up PROGRESS.md and PROGRESS_GRAPH.md
-
-### Step 3 — Execute
+### Stage 3 — Development
 **Phase 0** — Spawn 1 Expert React Frontend Engineer:
-  > "Read .tasks/expert-react-frontend-engineer.md and implement Task T1."
+  > "Read .tasks/expert-react-frontend-engineer.md and implement Task T1." (shared types)
 
-**Phase 1** — Spawn 4 agents in parallel:
-  > Expert React Frontend Engineer: "Read .tasks/expert-react-frontend-engineer.md and implement Task T2."
-  > SVG Animation Engineer: "Read .tasks/svg-animation-engineer.md and implement the task described there."
-  > Game Logic Engineer: "Read .tasks/game-logic-engineer.md and implement the task described there."
-  > Expert React Frontend Engineer: "Read .tasks/expert-react-frontend-engineer.md and implement Task T3."
+**Phase 1** — Spawn 3 agents in parallel:
+  > Expert React Frontend Engineer: "Read .tasks/expert-react-frontend-engineer.md and implement Task T2." (settings component)
+  > Expert React Frontend Engineer: "Read .tasks/expert-react-frontend-engineer.md and implement Task T3." (settings hook)
+  > Game Logic Engineer: "Read .tasks/game-logic-engineer.md and implement the task described there." (persistence)
 
-**Phase 2** — Spawn 2 agents in parallel:
-  > Expert React Frontend Engineer: "Read .tasks/expert-react-frontend-engineer.md and implement Task T4."
-  > Expert React Frontend Engineer: "Read .tasks/expert-react-frontend-engineer.md and implement Task T5."
+**Phase 2** — Integration wiring in App.tsx
 
-**Phase 3** — Integration check
+### Stage 4 — Integration
+Verify imports resolve, types match, app builds
 
-### Step 4 — Verify integration and report to user
+### Stage 5 — QA
+Call QA Engineer → runs tests, finds a layout bug on mobile
+→ Call Planner with QA report → fix plan created
+→ Spawn Expert React Frontend Engineer for fix
+→ Call QA Engineer again → all tests pass ✅
+
+### Stage 6 — Translation
+Call Translation Engineer → reviews new settings strings, improves Hebrew phrasing, validates completeness
+
+### Stage 7 — Commit and push
+```
+git commit -m "Add settings screen with language toggle and theme options"
+git push
+```
