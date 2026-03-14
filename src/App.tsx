@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import LevelSelect from './components/LevelSelect/LevelSelect';
+import LevelIntro from './components/LevelIntro/LevelIntro';
 import GameSession from './components/GameSession/GameSession';
 import Summary from './components/Summary/Summary';
 import HighScores from './components/HighScores/HighScores';
@@ -20,6 +21,10 @@ function App() {
 
   const startGameForLevel = (level: number) => {
     setSelectedLevel(level);
+    setCurrentView('levelIntro');
+  };
+
+  const startGameFromIntro = () => {
     setGameSessionKey((prev) => prev + 1);
     setCurrentView('game');
   };
@@ -46,6 +51,15 @@ function App() {
           highScores={highScores}
           onSelectLevel={startGameForLevel}
           onViewHighScores={() => setCurrentView('highScores')}
+        />
+      );
+      break;
+    case 'levelIntro':
+      content = (
+        <LevelIntro
+          level={selectedLevel}
+          onStart={startGameFromIntro}
+          onBack={() => setCurrentView('levelSelect')}
         />
       );
       break;

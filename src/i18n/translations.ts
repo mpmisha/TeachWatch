@@ -4,6 +4,7 @@ export interface LevelTranslation {
   name: string;
   description: string;
   learningGoal: string;
+  tips: string[];
 }
 
 export interface TranslationStrings {
@@ -17,6 +18,10 @@ export interface TranslationStrings {
   best: string;
   readyToPlay: string;
   notPlayedYet: string;
+  levelIntroTitle: string;
+  levelIntroGoalLabel: string;
+  levelIntroTipsLabel: string;
+  levelIntroStart: string;
 
   levelGameSession: (level: number) => string;
   quit: string;
@@ -83,6 +88,10 @@ export const translations: Record<Language, TranslationStrings> = {
     best: 'Best',
     readyToPlay: 'Ready to play',
     notPlayedYet: 'Not played yet',
+    levelIntroTitle: 'Mission Briefing',
+    levelIntroGoalLabel: "🎯 What you'll learn:",
+    levelIntroTipsLabel: '💡 Top Tips:',
+    levelIntroStart: "Let's Go!",
 
     levelGameSession: (level) => `Level ${level} game session`,
     quit: 'Quit',
@@ -139,31 +148,61 @@ export const translations: Record<Language, TranslationStrings> = {
         name: 'Hours Only',
         description: 'Read the hour hand on a friendly clock.',
         learningGoal: 'Understanding the "Little Hand" and its position.',
+        tips: [
+          'Look at the short hand only',
+          'The short hand points to the hour',
+          'Ignore the long hand for now',
+        ],
       },
       {
         name: 'The Half-Hour',
         description: 'Learn what happens when the big hand points down.',
         learningGoal: 'Introduction of the "Big Hand" and its 180-degree flip.',
+        tips: [
+          'The long hand pointing down means :30',
+          'First read the short hand for the hour',
+          'Down = half past!',
+        ],
       },
       {
         name: 'Five-Minute Jumps',
         description: 'Count by fives around the clock.',
         learningGoal: 'Learning the "Secret Identity" of numbers (e.g., 4 = 20).',
+        tips: [
+          'Each number on the clock means 5 minutes',
+          'Count by 5s: 5, 10, 15, 20...',
+          'The number 3 = 15 minutes!',
+        ],
       },
       {
         name: 'The Minute Tracker',
         description: 'Read any minute on the clock.',
         learningGoal: 'Counting individual ticks between 5-minute labels.',
+        tips: [
+          'Count the small ticks between the numbers',
+          'Each tiny tick = 1 minute',
+          'First find the nearest big number, then count ticks',
+        ],
       },
       {
         name: 'Standard Clock',
         description: 'A real clock - no helper labels.',
         learningGoal: 'Removing the 5-minute helper labels; relying on memory.',
+        tips: [
+          'No more helper labels - you can do it!',
+          'Remember: each number = 5 minutes',
+          'Use what you learned in earlier levels',
+        ],
       },
       {
         name: 'The Expert',
         description: 'No numbers at all - just the hands and ticks.',
         learningGoal: 'Removing all numbers; relying on spatial orientation only.',
+        tips: [
+          'No numbers at all - trust your instincts!',
+          'Think about where 12, 3, 6, 9 would be',
+          "You're a clock-reading master!",
+        ],
       },
     ],
   },
@@ -178,6 +217,10 @@ export const translations: Record<Language, TranslationStrings> = {
     best: 'הכי טוב',
     readyToPlay: 'מוכן לשחק',
     notPlayedYet: 'עדיין לא שוחק',
+    levelIntroTitle: 'תדריך המשימה',
+    levelIntroGoalLabel: '🎯 מה תלמדו:',
+    levelIntroTipsLabel: '💡 טיפים חשובים:',
+    levelIntroStart: '!יאללה',
 
     levelGameSession: (level) => `סשן משחק שלב ${level}`,
     quit: 'יציאה',
@@ -234,31 +277,61 @@ export const translations: Record<Language, TranslationStrings> = {
         name: 'שעות בלבד',
         description: 'קראו את מחוג השעות על שעון ידידותי.',
         learningGoal: 'הבנת "המחוג הקטן" ומיקומו.',
+        tips: [
+          'הסתכלו רק על המחוג הקצר',
+          'המחוג הקצר מצביע על השעה',
+          'התעלמו מהמחוג הארוך לעת עתה',
+        ],
       },
       {
         name: 'חצי שעה',
         description: 'למדו מה קורה כשהמחוג הגדול מצביע למטה.',
         learningGoal: 'היכרות עם "המחוג הגדול" והסיבוב של 180 מעלות.',
+        tips: [
+          'כשהמחוג הארוך מצביע למטה זה :30',
+          'קודם קראו את המחוג הקצר לשעה',
+          'למטה = וחצי!',
+        ],
       },
       {
         name: 'קפיצות של חמש',
         description: 'ספרו בחמישיות סביב השעון.',
         learningGoal: 'לימוד "הזהות הסודית" של מספרים (למשל, 4 = 20).',
+        tips: [
+          'כל מספר על השעון שווה 5 דקות',
+          'ספרו בחמישיות: 5, 10, 15, 20...',
+          'המספר 3 = 15 דקות!',
+        ],
       },
       {
         name: 'עוקב הדקות',
         description: 'קראו כל דקה על השעון.',
         learningGoal: 'ספירת סימונים בודדים בין תוויות של 5 דקות.',
+        tips: [
+          'ספרו את הסימונים הקטנים בין המספרים',
+          'כל סימון קטן = דקה אחת',
+          'מצאו את המספר הקרוב ואז ספרו סימונים',
+        ],
       },
       {
         name: 'שעון רגיל',
         description: 'שעון אמיתי - בלי תוויות עזר.',
         learningGoal: 'הסרת תוויות חמש הדקות; הסתמכות על הזיכרון.',
+        tips: [
+          'אין יותר תוויות עזר - אתם יכולים!',
+          'זכרו: כל מספר = 5 דקות',
+          'השתמשו במה שלמדתם בשלבים הקודמים',
+        ],
       },
       {
         name: 'המומחה',
         description: 'בלי מספרים בכלל - רק מחוגים וסימונים.',
         learningGoal: 'הסרת כל המספרים; הסתמכות על אוריינטציה מרחבית בלבד.',
+        tips: [
+          'בלי מספרים בכלל - סמכו על עצמכם!',
+          'חשבו איפה היו 12, 3, 6, 9',
+          'אתם מומחי קריאת שעון!',
+        ],
       },
     ],
   },
