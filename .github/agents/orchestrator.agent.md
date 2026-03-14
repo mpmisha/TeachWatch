@@ -128,7 +128,7 @@ These are the only agents you can call. Each has a specific role:
 - **Expert React Frontend Engineer** — Writes code, fixes bugs, implements React component and application logic (React 19.2 specialist). You may spawn **multiple instances in parallel**, each scoped to different files.
 - **SVG Animation Engineer** — Owns the clock SVG rendering, hand rotation, feedback animations, and all motion
 - **Game Logic Engineer** — Owns question generation, distractor engine, level progression, scoring, and localStorage persistence
-- **Designer** — Creates UI/UX, styling, visual design
+- **Designer** — Creates UI/UX, styling, visual design. Uses Google Stitch for AI-powered design generation with fallback to manual design
 - **DevOps Engineer** — Owns project scaffolding, tooling configuration (Vite, TypeScript, ESLint), dependency management, build pipelines, and dev server setup
 - **QA Engineer** — Owns end-to-end testing with Playwright, accessibility audits, cross-browser validation, and bug reporting
 - **Translation Engineer** — Owns all translation and localization work: improving existing translations, adding new languages, maintaining the glossary, and ensuring kid-friendly copywriting quality

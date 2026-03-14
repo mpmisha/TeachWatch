@@ -24,8 +24,13 @@ This is the end-to-end workflow for significant features and changes. Every stag
 
 ### Stage 2: Design
 1. If the plan includes design tasks, call the **Designer** first
-2. Wait for design to complete before moving to development
-3. Update PROGRESS.md and PROGRESS_GRAPH.md
+2. The Designer will use **Google Stitch** to generate AI-powered UI designs:
+   - Stitch generates multiple design variations based on the feature brief
+   - The Designer picks the best variation and adapts it to the project's design system
+   - Design specs (CSS, component structure, design tokens) are delivered for developers
+3. If Stitch is unavailable (missing credentials), the Designer proceeds with manual design work — do not block the pipeline
+4. Wait for design to complete before moving to development
+5. Update PROGRESS.md and PROGRESS_GRAPH.md
 
 ### Stage 3: Development (Parallel Execution)
 Execute the Planner's phases in order:
