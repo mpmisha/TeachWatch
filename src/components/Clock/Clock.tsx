@@ -39,9 +39,9 @@ export function Clock({
       {hintHighlight && (
         <defs>
           <linearGradient id="hint-hand-grad" x1="0%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" stopColor="#fff8e1" />
-            <stop offset="40%" stopColor="#ffe082" />
-            <stop offset="100%" stopColor="#f9a825" />
+            <stop offset="0%" stopColor="#ff8f00" />
+            <stop offset="50%" stopColor="#f9a825" />
+            <stop offset="100%" stopColor="#e65100" />
           </linearGradient>
           <filter id="hint-glow" x="-50%" y="-50%" width="200%" height="200%">
             <feGaussianBlur in="SourceGraphic" stdDeviation="1" result="blur1" />

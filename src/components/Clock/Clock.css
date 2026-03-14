@@ -204,17 +204,17 @@
 /* Active hand glow - dramatic multi-layer */
 .clock-hand--hint .clock-hand {
   stroke: url(#hint-hand-grad);
-  filter: url(#hint-glow);
+  filter: url(#hint-glow) drop-shadow(0 0 2px rgba(230, 81, 0, 0.8));
   animation: hint-hand-throb 1.5s ease-in-out infinite alternate;
   opacity: 1;
 }
 
 .clock-hand--hint .clock-hand--hour {
-  stroke-width: 4.5;
+  stroke-width: 5;
 }
 
 .clock-hand--hint .clock-hand--minute {
-  stroke-width: 3;
+  stroke-width: 3.5;
 }
 
 /* Overlay: number halo (glowing circle behind number) */
