@@ -10,6 +10,9 @@ interface QuestionViewProps {
   onAnswer: (index: number) => void
   disabled: boolean
   answerFeedback: { highlightIndex: number; highlightType: 'correct' | 'incorrect' } | null
+  questionNumber: number
+  level: number
+  levelTip?: string
 }
 
 export function QuestionView({
@@ -19,12 +22,22 @@ export function QuestionView({
   onAnswer,
   disabled,
   answerFeedback,
+  questionNumber,
+  level,
+  levelTip,
 }: QuestionViewProps) {
   const { t } = useTranslation()
   const showAnswerButtons = animationState !== 'sweeping'
 
   return (
-    <section className="question-view" aria-label={t.currentQuestion}>
+    <section className="question-view" aria-label={`${t.currentQuestion} ${questionNumber}`} data-level={level}>
+      {levelTip && (
+        <div className="question-view__tip-banner">
+          <span className="question-view__tip-icon" aria-hidden="true">💡</span>
+          <p className="question-view__tip-text">{levelTip}</p>
+        </div>
+      )}
+
       <div className="question-view__clock">
         <Clock
           time={question.time}

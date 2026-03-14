@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react'
 import type { SessionResult } from '../../types/game'
+import { LEVELS } from '../../logic/levelConfig'
 import { useGameSession } from '../../hooks/useGameSession'
 import { useTranslation } from '../../i18n'
 import Button from '../common/Button'
@@ -28,6 +29,9 @@ export function GameSession({ level, onComplete, onQuit }: GameSessionProps) {
   } = useGameSession(level)
 
   const completionSentRef = useRef(false)
+  const levelIndex = Math.min(Math.max(level - 1, 0), LEVELS.length - 1)
+  const levelName = t.levels[levelIndex]?.name ?? ''
+  const levelTip = questionNumber === 1 ? t.levels[levelIndex]?.tips[0] : undefined
 
   useEffect(() => {
     completionSentRef.current = false
@@ -52,6 +56,9 @@ export function GameSession({ level, onComplete, onQuit }: GameSessionProps) {
         <Button variant="secondary" onClick={onQuit} className="game-session__quit-button">
           {t.quit}
         </Button>
+        <h2 className="game-session__level-title">
+          {t.levelLabel(level)} – {levelName}
+        </h2>
         <div className="game-session__progress-wrap">
           <ProgressBar current={Math.max(0, questionNumber - 1)} total={totalQuestions} />
         </div>
@@ -66,6 +73,9 @@ export function GameSession({ level, onComplete, onQuit }: GameSessionProps) {
             onAnswer={handleAnswer}
             disabled={answersDisabled}
             answerFeedback={answerFeedback}
+            questionNumber={questionNumber}
+            level={level}
+            levelTip={levelTip}
           />
         ) : (
           <div className="game-session__loading">{t.preparingQuestions}</div>
