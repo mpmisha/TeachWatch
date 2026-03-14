@@ -5,9 +5,10 @@ import './ProgressBar.css'
 export interface ProgressBarProps {
   current: number
   total: number
+  results?: boolean[]
 }
 
-export function ProgressBar({ current, total }: ProgressBarProps): ReactNode {
+export function ProgressBar({ current, total, results }: ProgressBarProps): ReactNode {
   const { t } = useTranslation();
   const safeTotal = Number.isFinite(total) && total > 0 ? Math.floor(total) : 0
   const clampedCurrent = Math.max(0, Math.min(current, Math.max(0, safeTotal - 1)))
@@ -31,7 +32,7 @@ export function ProgressBar({ current, total }: ProgressBarProps): ReactNode {
         const stateClass = isCurrent
           ? 'progress-dot--current'
           : isComplete
-            ? 'progress-dot--complete'
+            ? (results?.[index] === false ? 'progress-dot--incorrect' : 'progress-dot--complete')
             : 'progress-dot--upcoming'
 
         return <span key={index} className={`progress-dot ${stateClass}`} aria-hidden="true" />

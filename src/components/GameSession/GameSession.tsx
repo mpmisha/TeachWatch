@@ -23,6 +23,7 @@ export function GameSession({ level, hintsEnabled, onComplete, onQuit }: GameSes
     activeHighlight,
     hintStage,
     triggerHint,
+    questionResults,
     questionNumber,
     totalQuestions,
     animationState,
@@ -64,7 +65,7 @@ export function GameSession({ level, hintsEnabled, onComplete, onQuit }: GameSes
           {t.levelLabel(level)} – {levelName}
         </h2>
         <div className="game-session__progress-wrap">
-          <ProgressBar current={Math.max(0, questionNumber - 1)} total={totalQuestions} />
+          <ProgressBar current={Math.max(0, questionNumber - 1)} total={totalQuestions} results={questionResults} />
         </div>
       </header>
 

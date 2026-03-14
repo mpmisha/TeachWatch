@@ -30,6 +30,7 @@ export function useGameSession(level: number): {
   activeHighlight: HintHighlight | null
   hintStage: HintStage
   triggerHint: () => void
+  questionResults: boolean[]
   questionNumber: number
   totalQuestions: number
   animationState: ClockAnimationState
@@ -45,6 +46,7 @@ export function useGameSession(level: number): {
   const [answerFeedback, setAnswerFeedback] = useState<AnswerFeedback | null>(null)
   const [isAnswerLocked, setIsAnswerLocked] = useState(false)
   const [sessionResult, setSessionResult] = useState<SessionResult | null>(null)
+  const [questionResults, setQuestionResults] = useState<boolean[]>([])
 
   const visualHint = useMemo<VisualHint | null>(() => {
     const question = questions[questionIndex]
@@ -87,6 +89,7 @@ export function useGameSession(level: number): {
     setAnswerFeedback(null)
     setIsAnswerLocked(false)
     setSessionResult(null)
+    setQuestionResults([])
     answersRef.current = []
     questionStartRef.current = Date.now()
 
@@ -119,6 +122,11 @@ export function useGameSession(level: number): {
       }
 
       answersRef.current = [...answersRef.current, nextAnswer]
+      setQuestionResults((previousResults) => {
+        const nextResults = [...previousResults]
+        nextResults[questionIndex] = isCorrect
+        return nextResults
+      })
 
       setAnimationState(feedbackType)
       setAnswerFeedback({
@@ -158,6 +166,7 @@ export function useGameSession(level: number): {
     activeHighlight,
     hintStage,
     triggerHint,
+    questionResults,
     questionNumber: Math.min(questionIndex + 1, TOTAL_QUESTIONS),
     totalQuestions: TOTAL_QUESTIONS,
     animationState,

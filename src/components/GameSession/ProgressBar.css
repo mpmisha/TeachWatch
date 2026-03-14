@@ -24,6 +24,11 @@
   border-color: var(--color-progress-complete, #0f766e);
 }
 
+.progress-dot--incorrect {
+  background: var(--color-progress-incorrect, #ef4444);
+  border-color: var(--color-progress-incorrect, #ef4444);
+}
+
 .progress-dot--current {
   background: var(--color-progress-active, #f59e0b);
   border-color: var(--color-progress-active, #f59e0b);
