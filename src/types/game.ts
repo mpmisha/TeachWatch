@@ -28,6 +28,11 @@ export interface Question {
   correctIndex: number;          // 0-3 index into options[]
 }
 
+/** A contextual hint for a question */
+export interface Hint {
+  text: string;
+}
+
 /** Record of the player's answer to one question */
 export interface Answer {
   questionIndex: number;

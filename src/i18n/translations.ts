@@ -68,6 +68,10 @@ export interface TranslationStrings {
 
   settings: string;
   settingsTitle: string;
+  hintButton: string;
+  hintClose: string;
+  hintsEnabled: string;
+  hintLevelMessages: string[];
   language: string;
   resetScores: string;
   resetScoresConfirm: string;
@@ -138,6 +142,17 @@ export const translations: Record<Language, TranslationStrings> = {
 
     settings: 'Settings',
     settingsTitle: 'Settings',
+    hintButton: 'Hint 💡',
+    hintClose: 'Got it!',
+    hintsEnabled: 'Show Hints',
+    hintLevelMessages: [
+      'The short hand is pointing near the {hour}',
+      'The short hand is near {hour}. Is the long hand pointing up (:00) or down (:30)?',
+      'The long hand is near the number {nearestFive}. Each number means 5 minutes.',
+      'The long hand is past {nearestFive} ({nearestFiveMinutes} min). Count the extra ticks!',
+      'Remember: {hour} on the short hand. The long hand is near where {nearestFive} would be.',
+      'The short hand is about {hour} hours around. Count ticks from the top for minutes.',
+    ],
     language: 'Language',
     resetScores: 'Reset All Scores',
     resetScoresConfirm: 'Are you sure? This will erase all your high scores.',
@@ -267,6 +282,17 @@ export const translations: Record<Language, TranslationStrings> = {
 
     settings: 'הגדרות',
     settingsTitle: 'הגדרות',
+    hintButton: '💡 רמז',
+    hintClose: '!הבנתי',
+    hintsEnabled: 'הצגת רמזים',
+    hintLevelMessages: [
+      'המחוג הקצר מצביע ליד ה-{hour}',
+      'המחוג הקצר ליד {hour}. האם המחוג הארוך מצביע למעלה (:00) או למטה (:30)?',
+      'המחוג הארוך ליד המספר {nearestFive}. כל מספר שווה 5 דקות.',
+      'המחוג הארוך עבר את {nearestFive} ({nearestFiveMinutes} דק׳). ספרו את השנתות הנוספות!',
+      'זכרו: {hour} במחוג הקצר. המחוג הארוך ליד המקום של {nearestFive}.',
+      'המחוג הקצר בערך {hour} שעות מסביב. ספרו שנתות מלמעלה לדקות.',
+    ],
     language: 'שפה',
     resetScores: 'איפוס כל הציונים',
     resetScoresConfirm: 'בטוח? זה ימחק את כל השיאים שלך.',

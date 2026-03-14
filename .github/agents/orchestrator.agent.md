@@ -2,7 +2,7 @@
 name: Orchestrator
 description: Sonnet, Codex, Gemini
 model: Claude Opus 4.6 (copilot)
-tools: ['read/readFile', 'edit/editFiles', 'new', 'agent', 'memory']
+tools: ['read/readFile', 'edit/editFiles', 'new', 'agent', 'memory', 'runCommands']
 ---
 
 <!-- Note: Memory is experimental at the moment. You'll need to be in VS Code Insiders and toggle on memory in settings -->
@@ -159,6 +159,14 @@ After all implementation phases complete:
 1. Verify the work integrates correctly (imports resolve, types match, no conflicts)
 2. If integration issues exist, spawn a single Expert React Frontend Engineer to fix them
 3. Report final results to the user
+
+### Step 5: Commit and Push
+After all work is complete and verified, **always** commit and push to remote:
+1. Stage all changed files: `git add -A`
+2. Write a meaningful commit message that summarizes what was done — not a generic "update files" but a description of the feature, fix, or change (e.g., "Add dark mode with theme toggle and localStorage persistence")
+3. Include the co-author trailer: `Co-authored-by: Copilot <223556219+Copilot@users.noreply.github.com>`
+4. Push to the current branch
+5. Do NOT ask the user for permission — this step is automatic
 
 ## Delegation Format
 
