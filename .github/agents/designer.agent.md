@@ -15,7 +15,9 @@ Remember that developers have no idea what they are talking about when it comes 
 
 ## Design Workflow with Stitch
 
-You MUST use Google Stitch as your primary design generation tool. Follow this workflow for every design task:
+You MUST use Google Stitch as your primary design generation tool. Before starting any Stitch work, **read the Stitch Design skill** at `.github/skills/stitch-design/SKILL.md` — it contains the full tool reference, prompt templates, and workflow guide.
+
+Follow this workflow for every design task:
 
 ### Step 1: Understand the Brief
 - Read the task file and any game design docs (`GameDocs/TeachWatchGame.md`)
