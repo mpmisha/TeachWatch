@@ -61,6 +61,13 @@ export interface TranslationStrings {
   bronzeMedal: string;
   noMedal: string;
 
+  settings: string;
+  settingsTitle: string;
+  language: string;
+  resetScores: string;
+  resetScoresConfirm: string;
+  resetScoresDone: string;
+
   levels: LevelTranslation[];
 }
 
@@ -119,6 +126,13 @@ export const translations: Record<Language, TranslationStrings> = {
     silverMedal: 'Silver medal',
     bronzeMedal: 'Bronze medal',
     noMedal: 'No medal',
+
+    settings: 'Settings',
+    settingsTitle: 'Settings',
+    language: 'Language',
+    resetScores: 'Reset All Scores',
+    resetScoresConfirm: 'Are you sure? This will erase all your high scores.',
+    resetScoresDone: 'Scores have been reset!',
 
     levels: [
       {
@@ -207,6 +221,13 @@ export const translations: Record<Language, TranslationStrings> = {
     silverMedal: 'מדליית כסף',
     bronzeMedal: 'מדליית ארד',
     noMedal: 'ללא מדליה',
+
+    settings: 'הגדרות',
+    settingsTitle: 'הגדרות',
+    language: 'שפה',
+    resetScores: 'איפוס כל הציונים',
+    resetScoresConfirm: 'בטוח? זה ימחק את כל השיאים שלך.',
+    resetScoresDone: 'הציונים אופסו!',
 
     levels: [
       {
