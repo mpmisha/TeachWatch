@@ -9,7 +9,7 @@
   "best": "Best",
   "readyToPlay": "Ready to play",
   "notPlayedYet": "Not tried yet",
-  "levelIntroTitle": "Mission Briefing",
+  "levelIntroTitle": "Here's the Plan!",
   "levelIntroGoalLabel": "🎯 What you'll learn:",
   "levelIntroTipsLabel": "💡 Top Tips:",
   "levelIntroStart": "Let's Go!",
@@ -79,7 +79,7 @@
     {
       "name": "Hours Only",
       "description": "Read the hour hand on a friendly clock.",
-      "learningGoal": "Learning what the hour hand tells you.",
+      "learningGoal": "Discover what the hour hand tells you.",
       "tips": [
         "Look at the hour hand only",
         "The hour hand points to the hour",
@@ -89,7 +89,7 @@
     {
       "name": "The Half-Hour",
       "description": "Learn what happens when the minute hand points down.",
-      "learningGoal": "Learning what 'half past' looks like on the clock.",
+      "learningGoal": "Find out what 'half past' looks like on the clock.",
       "tips": [
         "The minute hand pointing down means :30",
         "First check the hour hand",
@@ -109,7 +109,7 @@
     {
       "name": "The Minute Tracker",
       "description": "Read any minute on the clock.",
-      "learningGoal": "Counting the tiny ticks between the numbers.",
+      "learningGoal": "Count the tiny ticks between the numbers.",
       "tips": [
         "Count the small ticks between the numbers",
         "Each tiny tick = 1 minute",
@@ -121,7 +121,7 @@
       "description": "A real clock — no helper labels!",
       "learningGoal": "Reading the clock without helper labels — from memory!",
       "tips": [
-        "No more helper labels - you can do it!",
+        "No helper labels — you've got this!",
         "Remember: each number = 5 minutes",
         "Use what you learned in earlier levels"
       ]
