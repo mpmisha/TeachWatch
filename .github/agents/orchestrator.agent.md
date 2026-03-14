@@ -131,6 +131,7 @@ These are the only agents you can call. Each has a specific role:
 - **Designer** — Creates UI/UX, styling, visual design
 - **DevOps Engineer** — Owns project scaffolding, tooling configuration (Vite, TypeScript, ESLint), dependency management, build pipelines, and dev server setup
 - **QA Engineer** — Owns end-to-end testing with Playwright, accessibility audits, cross-browser validation, and bug reporting
+- **Translation Engineer** — Owns all translation and localization work: improving existing translations, adding new languages, maintaining the glossary, and ensuring kid-friendly copywriting quality
 
 ## Execution Model
 

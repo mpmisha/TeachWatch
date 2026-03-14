@@ -1,0 +1,140 @@
+{
+  "chooseYourAdventure": "בחרו את ההרפתקה שלכם",
+  "appTitle": "גאון שעון",
+  "trophyRoom": "חדר הגביעים",
+  "availableLevels": "שלבים זמינים",
+
+  "startLevel": "התחל שלב {level}: {name}",
+  "topScore": "שיא",
+  "best": "הכי טוב",
+  "readyToPlay": "מוכן לשחק",
+  "notPlayedYet": "עדיין לא שוחק",
+  "levelIntroTitle": "תדריך המשימה",
+  "levelIntroGoalLabel": "🎯 מה תלמדו:",
+  "levelIntroTipsLabel": "💡 טיפים חשובים:",
+  "levelIntroStart": "!יאללה",
+
+  "levelGameSession": "סשן משחק שלב {level}",
+  "quit": "יציאה",
+  "preparingQuestions": "מכין שאלות...",
+  "questionProgress": "התקדמות שאלות",
+  "currentQuestion": "שאלה נוכחית",
+  "nextQuestion": "שאלה הבאה...",
+  "answerChoices": "אפשרויות תשובה",
+
+  "correct": "!נכון ✓",
+  "notQuite": "!לא בדיוק",
+
+  "clockAriaLabel": "שעון אנלוגי שמציג {hours}:{minutes}",
+
+  "sessionComplete": "המשחק הסתיים",
+  "greatEffort": "!מאמץ מעולה",
+  "scoreOutOf10": "{score} מתוך 10",
+  "completedIn": "הושלם תוך {duration}",
+  "perfectRound": "!סיבוב מושלם! כל השעונים היו נכונים",
+  "tryAgain": "נסה שוב",
+  "levelSelect": "בחירת שלב",
+  "starsAriaLabel": "{stars} מתוך {max} כוכבים",
+
+  "trickyTimes": "זמנים מסובכים",
+  "questionsToRetry": "שאלות לתרגול חוזר",
+  "correctLabel": ":נכון",
+  "youPicked": ":בחרת",
+
+  "progressTracker": "מעקב התקדמות",
+  "back": "חזרה",
+  "scoresByLevel": "ציונים לפי שלב",
+  "levelLabel": "שלב {level}",
+  "levelAriaLabel": "שלב {level}: {name}",
+  "bestScore": "ציון הכי טוב",
+  "fastestTime": "הזמן הכי מהיר",
+  "lastPlayed": "שוחק לאחרונה",
+  "unknownDate": "תאריך לא ידוע",
+  "scoreOf10": "{score}/10",
+
+  "goldMedal": "מדליית זהב",
+  "silverMedal": "מדליית כסף",
+  "bronzeMedal": "מדליית ארד",
+  "noMedal": "ללא מדליה",
+
+  "settings": "הגדרות",
+  "settingsTitle": "הגדרות",
+  "hintButton": "💡 רמז",
+  "hintClose": "!הבנתי",
+  "hintsEnabled": "הצגת רמזים",
+  "hintLevelMessages": [
+    "המחוג הקצר מצביע ליד ה-{hour}",
+    "המחוג הקצר ליד {hour}. האם המחוג הארוך מצביע למעלה (:00) או למטה (:30)?",
+    "המחוג הארוך ליד המספר {nearestFive}. כל מספר שווה 5 דקות.",
+    "המחוג הארוך עבר את {nearestFive} ({nearestFiveMinutes} דק׳). ספרו את השנתות הנוספות!",
+    "זכרו: {hour} במחוג הקצר. המחוג הארוך ליד המקום של {nearestFive}.",
+    "המחוג הקצר בערך {hour} שעות מסביב. ספרו שנתות מלמעלה לדקות."
+  ],
+  "language": "שפה",
+  "resetScores": "איפוס כל הציונים",
+  "resetScoresConfirm": "בטוח? זה ימחק את כל השיאים שלך.",
+  "resetScoresDone": "הציונים אופסו!",
+
+  "levels": [
+    {
+      "name": "שעות בלבד",
+      "description": "קראו את מחוג השעות על שעון ידידותי.",
+      "learningGoal": "הבנת \"המחוג הקטן\" ומיקומו.",
+      "tips": [
+        "הסתכלו רק על המחוג הקצר",
+        "המחוג הקצר מצביע על השעה",
+        "התעלמו מהמחוג הארוך לעת עתה"
+      ]
+    },
+    {
+      "name": "חצי שעה",
+      "description": "למדו מה קורה כשהמחוג הגדול מצביע למטה.",
+      "learningGoal": "היכרות עם \"המחוג הגדול\" והסיבוב של 180 מעלות.",
+      "tips": [
+        "כשהמחוג הארוך מצביע למטה זה :30",
+        "קודם קראו את המחוג הקצר לשעה",
+        "למטה = וחצי!"
+      ]
+    },
+    {
+      "name": "קפיצות של חמש",
+      "description": "ספרו בחמישיות סביב השעון.",
+      "learningGoal": "לימוד \"הזהות הסודית\" של מספרים (למשל, 4 = 20).",
+      "tips": [
+        "כל מספר על השעון שווה 5 דקות",
+        "ספרו בחמישיות: 5, 10, 15, 20...",
+        "המספר 3 = 15 דקות!"
+      ]
+    },
+    {
+      "name": "עוקב הדקות",
+      "description": "קראו כל דקה על השעון.",
+      "learningGoal": "ספירת שנתות בודדות בין תוויות של 5 דקות.",
+      "tips": [
+        "ספרו את השנתות הקטנות בין המספרים",
+        "כל סימון קטן = דקה אחת",
+        "מצאו את המספר הקרוב ואז ספרו שנתות"
+      ]
+    },
+    {
+      "name": "שעון רגיל",
+      "description": "שעון אמיתי - בלי תוויות עזר.",
+      "learningGoal": "הסרת תוויות חמש הדקות; הסתמכות על הזיכרון.",
+      "tips": [
+        "אין יותר תוויות עזר - אתם יכולים!",
+        "זכרו: כל מספר = 5 דקות",
+        "השתמשו במה שלמדתם בשלבים הקודמים"
+      ]
+    },
+    {
+      "name": "המומחה",
+      "description": "בלי מספרים בכלל - רק מחוגים ושנתות.",
+      "learningGoal": "הסרת כל המספרים; הסתמכות על אוריינטציה מרחבית בלבד.",
+      "tips": [
+        "בלי מספרים בכלל - סמכו על עצמכם!",
+        "חשבו איפה היו 12, 3, 6, 9",
+        "אתם מומחי קריאת שעון!"
+      ]
+    }
+  ]
+}

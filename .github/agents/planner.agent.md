@@ -37,7 +37,7 @@ Each chunk in the plan must include:
 - **Description**: What this chunk delivers
 - **Files**: Exact file paths to create or modify
 - **Dependencies**: Which chunk IDs must complete first (empty if none)
-- **Agent**: Which specialist agent should execute it (`Expert React Frontend Engineer`, `SVG Animation Engineer`, `Game Logic Engineer`, `DevOps Engineer`, `QA Engineer`, or `Designer`)
+- **Agent**: Which specialist agent should execute it (`Expert React Frontend Engineer`, `SVG Animation Engineer`, `Game Logic Engineer`, `DevOps Engineer`, `QA Engineer`, `Translation Engineer`, or `Designer`)
 
 ### Phasing Rules
 

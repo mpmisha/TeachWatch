@@ -1,0 +1,140 @@
+{
+  "chooseYourAdventure": "Choose Your Adventure",
+  "appTitle": "TeachWatch",
+  "trophyRoom": "Trophy Room",
+  "availableLevels": "Available levels",
+
+  "startLevel": "Start level {level}: {name}",
+  "topScore": "Top Score",
+  "best": "Best",
+  "readyToPlay": "Ready to play",
+  "notPlayedYet": "Not played yet",
+  "levelIntroTitle": "Mission Briefing",
+  "levelIntroGoalLabel": "🎯 What you'll learn:",
+  "levelIntroTipsLabel": "💡 Top Tips:",
+  "levelIntroStart": "Let's Go!",
+
+  "levelGameSession": "Level {level} game session",
+  "quit": "Quit",
+  "preparingQuestions": "Preparing questions...",
+  "questionProgress": "Question progress",
+  "currentQuestion": "Current question",
+  "nextQuestion": "Next question...",
+  "answerChoices": "Answer choices",
+
+  "correct": "Correct! ✓",
+  "notQuite": "Not quite!",
+
+  "clockAriaLabel": "Analog clock showing {hours}:{minutes}",
+
+  "sessionComplete": "Session Complete",
+  "greatEffort": "Great effort!",
+  "scoreOutOf10": "{score} out of 10",
+  "completedIn": "Completed in {duration}",
+  "perfectRound": "Perfect round. Every clock was right on time!",
+  "tryAgain": "Try Again",
+  "levelSelect": "Level Select",
+  "starsAriaLabel": "{stars} out of {max} stars",
+
+  "trickyTimes": "Tricky Times",
+  "questionsToRetry": "Questions to practice again",
+  "correctLabel": "Correct:",
+  "youPicked": "You picked:",
+
+  "progressTracker": "Progress Tracker",
+  "back": "Back",
+  "scoresByLevel": "Scores by level",
+  "levelLabel": "Level {level}",
+  "levelAriaLabel": "Level {level}: {name}",
+  "bestScore": "Best Score",
+  "fastestTime": "Fastest Time",
+  "lastPlayed": "Last Played",
+  "unknownDate": "Unknown date",
+  "scoreOf10": "{score}/10",
+
+  "goldMedal": "Gold medal",
+  "silverMedal": "Silver medal",
+  "bronzeMedal": "Bronze medal",
+  "noMedal": "No medal",
+
+  "settings": "Settings",
+  "settingsTitle": "Settings",
+  "hintButton": "Hint 💡",
+  "hintClose": "Got it!",
+  "hintsEnabled": "Show Hints",
+  "hintLevelMessages": [
+    "The short hand is pointing near the {hour}",
+    "The short hand is near {hour}. Is the long hand pointing up (:00) or down (:30)?",
+    "The long hand is near the number {nearestFive}. Each number means 5 minutes.",
+    "The long hand is past {nearestFive} ({nearestFiveMinutes} min). Count the extra ticks!",
+    "Remember: {hour} on the short hand. The long hand is near where {nearestFive} would be.",
+    "The short hand is about {hour} hours around. Count ticks from the top for minutes."
+  ],
+  "language": "Language",
+  "resetScores": "Reset All Scores",
+  "resetScoresConfirm": "Are you sure? This will erase all your high scores.",
+  "resetScoresDone": "Scores have been reset!",
+
+  "levels": [
+    {
+      "name": "Hours Only",
+      "description": "Read the hour hand on a friendly clock.",
+      "learningGoal": "Understanding the \"Little Hand\" and its position.",
+      "tips": [
+        "Look at the short hand only",
+        "The short hand points to the hour",
+        "Ignore the long hand for now"
+      ]
+    },
+    {
+      "name": "The Half-Hour",
+      "description": "Learn what happens when the big hand points down.",
+      "learningGoal": "Introduction of the \"Big Hand\" and its 180-degree flip.",
+      "tips": [
+        "The long hand pointing down means :30",
+        "First read the short hand for the hour",
+        "Down = half past!"
+      ]
+    },
+    {
+      "name": "Five-Minute Jumps",
+      "description": "Count by fives around the clock.",
+      "learningGoal": "Learning the \"Secret Identity\" of numbers (e.g., 4 = 20).",
+      "tips": [
+        "Each number on the clock means 5 minutes",
+        "Count by 5s: 5, 10, 15, 20...",
+        "The number 3 = 15 minutes!"
+      ]
+    },
+    {
+      "name": "The Minute Tracker",
+      "description": "Read any minute on the clock.",
+      "learningGoal": "Counting individual ticks between 5-minute labels.",
+      "tips": [
+        "Count the small ticks between the numbers",
+        "Each tiny tick = 1 minute",
+        "First find the nearest big number, then count ticks"
+      ]
+    },
+    {
+      "name": "Standard Clock",
+      "description": "A real clock - no helper labels.",
+      "learningGoal": "Removing the 5-minute helper labels; relying on memory.",
+      "tips": [
+        "No more helper labels - you can do it!",
+        "Remember: each number = 5 minutes",
+        "Use what you learned in earlier levels"
+      ]
+    },
+    {
+      "name": "The Expert",
+      "description": "No numbers at all - just the hands and ticks.",
+      "learningGoal": "Removing all numbers; relying on spatial orientation only.",
+      "tips": [
+        "No numbers at all - trust your instincts!",
+        "Think about where 12, 3, 6, 9 would be",
+        "You're a clock-reading master!"
+      ]
+    }
+  ]
+}

@@ -1,192 +1,181 @@
-# Implementation Plan — Hint Feature
+# Implementation Plan — Refactor i18n to per-language JSON files
 
 ## Summary
 
-Add a "Hint" button to the game session that shows contextual clues based on the current question and level. A toggle in Settings controls visibility (persisted to localStorage). The hint system generates level-aware text hints that guide the child without revealing the answer. The work is split into 7 chunks across 4 phases, maximizing parallelism by separating logic, UI components, translations, and wiring.
+Refactor the TeachWatch translation system from a single `translations.ts` file (which contains inline TypeScript objects with function properties) to separate per-language JSON files with a runtime interpolation layer. The key challenge is that JSON cannot contain functions, so the 9 template-function keys (e.g., `levelLabel(3)`) must be stored as placeholder strings in JSON (`"Level {level}"`) and wrapped into real functions at runtime. The `TranslationStrings` interface and `useTranslation()` hook API remain unchanged so **zero components need modification**.
+
+---
+
+## Current State Inventory
+
+### Template Function Keys (9 keys — stored as `string` in JSON, resolved to functions at runtime)
+
+| Key | Params | EN Template |
+|-----|--------|-------------|
+| `startLevel` | `level: number, name: string` | `"Start level {level}: {name}"` |
+| `levelGameSession` | `level: number` | `"Level {level} game session"` |
+| `clockAriaLabel` | `hours: number, minutes: string` | `"Analog clock showing {hours}:{minutes}"` |
+| `scoreOutOf10` | `score: number` | `"{score} out of 10"` |
+| `completedIn` | `duration: string` | `"Completed in {duration}"` |
+| `starsAriaLabel` | `stars: number, max: number` | `"{stars} out of {max} stars"` |
+| `levelLabel` | `level: number` | `"Level {level}"` |
+| `levelAriaLabel` | `level: number, name: string` | `"Level {level}: {name}"` |
+| `scoreOf10` | `score: number` | `"{score}/10"` |
+
+### Structured Keys (2 keys — pass through as-is from JSON)
+
+| Key | Type | Notes |
+|-----|------|-------|
+| `hintLevelMessages` | `string[]` | Already uses `{placeholder}` syntax; `hintEngine.ts` does its own replacement |
+| `levels` | `LevelTranslation[]` | Array of 6 objects with `name`, `description`, `learningGoal`, `tips: string[]` |
+
+### Simple String Keys (~45 keys)
+
+All remaining keys are plain `string` values — pass through directly from JSON.
+
+### Consumer Components (16 files using `useTranslation()`)
+
+`App.tsx`, `LevelSelect.tsx`, `LevelCard.tsx`, `LevelIntro.tsx`, `GameSession.tsx`, `QuestionView.tsx`, `ProgressBar.tsx`, `AnswerButtons.tsx`, `FeedbackOverlay.tsx`, `HintButton.tsx`, `Summary.tsx`, `StarRating.tsx`, `TrickyTimes.tsx`, `HighScores.tsx`, `Medal.tsx`, `Settings.tsx`, `LanguageToggle.tsx`, plus `useGameSession.ts` hook. **None will change.**
+
+---
+
+## Architecture
+
+```
+src/i18n/
+  locales/
+    en.json                  ← NEW: all English strings (flat strings, placeholder templates, arrays)
+    he.json                  ← NEW: all Hebrew strings
+  types.ts                   ← NEW: Language, TranslationStrings, RawTranslationStrings, LevelTranslation
+  resolveTranslations.ts     ← NEW: interpolate() + resolveTranslations(raw) → TranslationStrings
+  translations.ts            ← MODIFIED: imports JSON + resolver, exports resolved translations
+  LanguageContext.tsx         ← MODIFIED: import types from types.ts instead of translations.ts
+  useTranslation.ts          ← UNCHANGED
+  index.ts                   ← MODIFIED: re-export from types.ts
+```
+
+### Key Design Decisions
+
+1. **Placeholder syntax**: `{paramName}` — matches the pattern already used in `hintLevelMessages`.
+2. **No external libraries**: Custom `interpolate()` function (~5 lines) does `{key}` → value replacement.
+3. **Static JSON imports**: Use Vite's built-in `import en from './locales/en.json'` (synchronous, tree-shakeable). Dynamic `import()` for lazy loading can be added as a follow-up.
+4. **Type safety preserved**: `TranslationStrings` interface is unchanged (functions and all). A new `RawTranslationStrings` type mirrors it but with all function keys typed as `string`. The `resolveTranslations()` function bridges the two with full compile-time safety.
+5. **Adding a new language**: Add `xx.json` in `locales/`, add `'xx'` to the `Language` union, register in `translations.ts`.
+6. **RTL mapping**: Stays in `LanguageContext.tsx` — per-language direction is context-level config, not in JSON.
 
 ---
 
 ## Phase 0: Shared Contracts
 
-### Chunk C0 — Shared types and translation interface extensions
-- **Files**: `src/types/game.ts`, `src/i18n/translations.ts`
-- **Dependencies**: none
-- **Agent**: Expert React Frontend Engineer
+- **Chunk C0**: Create shared types file
+  - Files: `src/i18n/types.ts` (create)
+  - Dependencies: none
+  - Agent: Expert React Frontend Engineer
 
-**`src/types/game.ts`** — Add a `Hint` interface:
-```ts
-export interface Hint {
-  text: string;
-}
-```
-
-**`src/i18n/translations.ts`** — Extend `TranslationStrings` with:
-- `hintButton: string` — e.g. "Hint 💡" / "💡 רמז"
-- `hintClose: string` — e.g. "Got it!" / "!הבנתי"
-- `hintsEnabled: string` — e.g. "Show Hints" / "הצגת רמזים"
-- `hintLevelMessages: string[]` — 6 template strings (one per level) with `{hour}`, `{nearestFive}`, `{nearestFiveMinutes}` placeholders
-
-English hint templates by level:
-1. `"The short hand is pointing near the {hour}"`
-2. `"The short hand is near {hour}. Is the long hand pointing up (:00) or down (:30)?"`
-3. `"The long hand is near the number {nearestFive}. Each number means 5 minutes."`
-4. `"The long hand is past {nearestFive} ({nearestFiveMinutes} min). Count the extra ticks!"`
-5. `"Remember: {hour} on the short hand. The long hand is near where {nearestFive} would be."`
-6. `"The short hand is about {hour} hours around. Count ticks from the top for minutes."`
-
-Hebrew equivalents following the same patterns.
-
-Add actual values in both `en` and `he` translation objects.
+  Contains:
+  - `Language` — type union `'en' | 'he'`
+  - `LevelTranslation` — interface (same as current: `name`, `description`, `learningGoal`, `tips: string[]`)
+  - `TranslationStrings` — interface (identical to current — functions and all). This is the public API type.
+  - `RawTranslationStrings` — new interface that mirrors `TranslationStrings` but every function key becomes `string`. The 9 template keys: `startLevel`, `levelGameSession`, `clockAriaLabel`, `scoreOutOf10`, `completedIn`, `starsAriaLabel`, `levelLabel`, `levelAriaLabel`, `scoreOf10`. All other keys match `TranslationStrings` types exactly.
 
 ---
 
 ## Phase 1 (parallel)
 
-### Chunk C1 — Hint generation logic
-- **Files**: `src/logic/hintEngine.ts`
-- **Dependencies**: C0
-- **Agent**: Game Logic Engineer
+- **Chunk C1**: Create JSON locale files
+  - Files: `src/i18n/locales/en.json` (create), `src/i18n/locales/he.json` (create)
+  - Dependencies: C0
+  - Agent: Expert React Frontend Engineer
 
-Create `src/logic/hintEngine.ts` exporting:
-```ts
-function generateHint(question: Question, level: number, templates: string[]): Hint
-```
+  Extract all translations from the current `en` and `he` objects in `translations.ts` into pure JSON form. Template function keys become placeholder strings using `{paramName}` syntax. All values are strings, string arrays, or objects. Ensure key names exactly match `RawTranslationStrings`. Example structure:
+  ```json
+  {
+    "appTitle": "TeachWatch",
+    "startLevel": "Start level {level}: {name}",
+    "levelLabel": "Level {level}",
+    "hintLevelMessages": ["The short hand is pointing near the {hour}", "..."],
+    "levels": [{ "name": "Hours Only", "description": "...", "learningGoal": "...", "tips": ["..."] }]
+  }
+  ```
 
-Logic:
-1. Select `templates[clampedLevelIndex]` as the base template
-2. Compute placeholders from `question.time`:
-   - `{hour}` → `question.time.hours`
-   - `{minutes}` → `question.time.minutes`
-   - `{nearestFive}` → clock number nearest to the minute hand: `Math.round(minutes / 5) % 12 || 12`
-   - `{nearestFiveMinutes}` → `Math.round(minutes / 5) * 5`
-3. Replace all placeholders in template string
-4. Return `{ text: filledTemplate }`
+- **Chunk C2**: Build the translation resolver
+  - Files: `src/i18n/resolveTranslations.ts` (create)
+  - Dependencies: C0
+  - Agent: Expert React Frontend Engineer
 
-Edge cases:
-- Minutes = 0 → `{nearestFive}` = 12 (top of clock)
-- Minutes = 58/59 → `{nearestFive}` rounds to 12
-- Level index out of range → clamp to valid index
+  Exports:
+  - `interpolate(template: string, params: Record<string, unknown>): string` — replaces `{key}` with `String(params[key])`. Only replaces keys that exist in `params` (leaves `{unknown}` untouched).
+  - `resolveTranslations(raw: RawTranslationStrings): TranslationStrings` — takes the raw JSON shape and returns a fully-typed `TranslationStrings` object.
 
----
-
-### Chunk C2 — HintButton + HintPopup UI components
-- **Files**: `src/components/GameSession/HintButton.tsx`, `src/components/GameSession/HintButton.css`
-- **Dependencies**: C0
-- **Agent**: Expert React Frontend Engineer
-
-**HintButton.tsx** — Two components in one file:
-
-`HintButton`: Props `onClick: () => void`, `disabled: boolean`. Renders `<Button variant="secondary">` with `t.hintButton` label. BEM class `hint-button`.
-
-`HintPopup`: Props `text: string`, `onClose: () => void`, `visible: boolean`. Modal card displaying hint text with a "Got it!" close button. BEM classes: `hint-popup`, `hint-popup--visible`, `hint-popup__text`, `hint-popup__close`. Accessible: `role="dialog"`, `aria-modal="true"`, backdrop click dismisses.
-
-**HintButton.css**:
-- `.hint-button` — compact secondary button styling
-- `.hint-popup` — centered overlay with backdrop dim, `width: min(90vw, 400px)`, rounded corners, soft background
-- `.hint-popup--visible` — opacity/pointer-events toggle with fade+scale animation
-- RTL-safe with logical CSS properties
-- Mobile responsive
+  The resolver explicitly constructs each template function with named params matching the `TranslationStrings` signatures:
+  ```ts
+  startLevel: (level, name) => interpolate(raw.startLevel, { level, name }),
+  levelGameSession: (level) => interpolate(raw.levelGameSession, { level }),
+  clockAriaLabel: (hours, minutes) => interpolate(raw.clockAriaLabel, { hours, minutes }),
+  scoreOutOf10: (score) => interpolate(raw.scoreOutOf10, { score }),
+  completedIn: (duration) => interpolate(raw.completedIn, { duration }),
+  starsAriaLabel: (stars, max) => interpolate(raw.starsAriaLabel, { stars, max }),
+  levelLabel: (level) => interpolate(raw.levelLabel, { level }),
+  levelAriaLabel: (level, name) => interpolate(raw.levelAriaLabel, { level, name }),
+  scoreOf10: (score) => interpolate(raw.scoreOf10, { score }),
+  ```
+  All simple string keys and structured keys (`levels`, `hintLevelMessages`) are spread from `raw` directly.
 
 ---
 
-### Chunk C3 — Settings toggle for hints + localStorage persistence
-- **Files**: `src/components/Settings/Settings.tsx`, `src/components/Settings/Settings.css`
-- **Dependencies**: C0
-- **Agent**: Expert React Frontend Engineer
+## Phase 2 (depends on C0, C1, C2)
 
-**Settings.tsx** changes:
-- Add new props: `hintsEnabled: boolean`, `onToggleHints: () => void`
-- Add a new `settings__card` between Language and Reset cards
-- Card title: `t.hintsEnabled`
-- Contains toggle button with `aria-pressed`, styled as on/off toggle
-- Toggle calls `onToggleHints`
+- **Chunk C3**: Integration — rewire the i18n module
+  - Files: `src/i18n/translations.ts` (modify), `src/i18n/LanguageContext.tsx` (modify), `src/i18n/index.ts` (modify)
+  - Dependencies: C0, C1, C2
+  - Agent: Expert React Frontend Engineer
 
-**Settings.css** changes:
-- Add `.settings__toggle` styles for the on/off toggle switch
-- Reuse existing card layout, color tokens
+  Changes:
 
-Edge cases: localStorage unavailable → parent defaults to `true`
+  1. **`src/i18n/translations.ts`**:
+     - Remove: the `Language` type, `LevelTranslation` interface, `TranslationStrings` interface, and the two large inline `en`/`he` objects.
+     - Add: import JSON files (`import enRaw from './locales/en.json'`, `import heRaw from './locales/he.json'`), import `resolveTranslations` from `./resolveTranslations`, import types from `./types`.
+     - Re-export all types from `./types` for backward compatibility (components importing `Language` from `./translations` still work).
+     - Export `translations: Record<Language, TranslationStrings>` built by calling `resolveTranslations()` on each JSON import (with `as RawTranslationStrings` cast on the Vite JSON imports).
 
----
+  2. **`src/i18n/LanguageContext.tsx`**:
+     - Update the import line: change `from './translations'` to `from './types'` for `Language` and `TranslationStrings`. Keep importing `translations` from `'./translations'`.
+     - Or: leave as-is if `translations.ts` re-exports everything from `./types`.
 
-## Phase 2 (parallel, depends on Phase 1)
-
-### Chunk C4 — Integrate HintButton into QuestionView
-- **Files**: `src/components/GameSession/QuestionView.tsx`
-- **Dependencies**: C0, C1, C2
-- **Agent**: Expert React Frontend Engineer
-
-**QuestionView.tsx** changes:
-- Add new props: `hint: Hint | null`, `hintsEnabled: boolean`
-- Add local state: `hintVisible` (boolean), reset to `false` when `question` changes
-- Render `<HintButton>` between clock and answer buttons when `hintsEnabled && hint`
-- Render `<HintPopup>` with `hint.text`, controlled by `hintVisible`
-- Disable hint button when `disabled` (during feedback animation)
+  3. **`src/i18n/index.ts`**:
+     - Add `export * from './types'` to ensure all type exports are available.
+     - Keep existing re-exports from `./translations`, `./LanguageContext`, `./useTranslation`.
+     - Verify no duplicate export names conflict.
 
 ---
 
-### Chunk C5 — Wire hints through GameSession + useGameSession + App
-- **Files**: `src/components/GameSession/GameSession.tsx`, `src/hooks/useGameSession.ts`, `src/App.tsx`
-- **Dependencies**: C0, C1, C3
-- **Agent**: Expert React Frontend Engineer
+## Edge Cases
 
-**useGameSession.ts** changes:
-- Import `generateHint` from `hintEngine.ts`
-- Import `useTranslation` to get `t.hintLevelMessages`
-- Compute `currentHint` via `generateHint(currentQuestion, level, t.hintLevelMessages)` — memoized on question change
-- Add `currentHint: Hint | null` to return type
-
-**GameSession.tsx** changes:
-- Destructure `currentHint` from `useGameSession`
-- Accept new prop: `hintsEnabled: boolean`
-- Pass `hint={currentHint}` and `hintsEnabled={hintsEnabled}` to `<QuestionView>`
-
-**App.tsx** changes:
-- Add state: `hintsEnabled` (boolean)
-- On mount, read `localStorage.getItem('teachwatch-hints-enabled')` — if `'false'`, set false; else true
-- On toggle, flip state + write to localStorage (try/catch for safety)
-- Pass `hintsEnabled` to `<GameSession>`
-- Pass `hintsEnabled` and `onToggleHints` to `<Settings>`
-
-Edge cases:
-- First-time users: no localStorage → default `true`
-- Toggling mid-game: immediate effect (button appears/disappears)
-- localStorage write failure: silently ignore, keep in-memory state
+1. **Missing placeholder in JSON**: If a template string omits `{param}`, `interpolate()` returns the string with unreplaced text. No crash — just incorrect display. Same risk as the current system (typo in template literal).
+2. **Extra/unknown `{placeholders}`**: `interpolate()` must only replace keys present in the `params` map. Guard: use a regex replacer that checks `key in params` before substituting.
+3. **`hintLevelMessages` vs `interpolate()`**: The hint engine (`hintEngine.ts`) does its own `String.replace()`. The `hintLevelMessages` strings pass through as-is from JSON. No overlap or conflict.
+4. **Vite JSON import typing**: Vite infers a generic type for `.json` imports. Use `as RawTranslationStrings` when passing to `resolveTranslations()`. Optional follow-up: add a ambient module declaration for stricter typing.
+5. **`levels` fallback pattern**: Components like `LevelCard` and `HighScores` use `t.levels[config.level - 1] ?? fallback`. This continues to work unchanged since `levels` remains an array.
+6. **`noUnusedLocals` in tsconfig**: All new exports/imports must be consumed. Verify no dead imports after integration.
+7. **Unicode / RTL in JSON**: JSON supports UTF-8 natively. Hebrew strings render correctly. The `dir` attribute is set by `LanguageContext` based on language code, not from JSON.
 
 ---
 
-## Phase 3: Validation
+## Validation Checklist
 
-### Chunk C6 — Manual QA checklist
-- **Files**: none (validation only)
-- **Dependencies**: C4, C5
-- **Agent**: QA Engineer
-
-Validate:
-1. Hint button visible on every question when hints enabled (all 6 levels)
-2. Hint button hidden when hints disabled in settings
-3. Hint popup shows level-appropriate, question-specific text
-4. Hint popup dismisses on "Got it!" and on backdrop click
-5. Hint auto-resets on question advance (no stale hint)
-6. Settings toggle persists across page reload
-7. RTL layout (Hebrew): hint button and popup render correctly
-8. Mobile (375px): popup fits within viewport
-9. Desktop (1280px): popup centered, max-width respected
-10. Accessibility: `role="dialog"`, keyboard dismiss (Escape), aria-pressed on toggle
-11. No visual regression on existing game session UI
-12. Template placeholders render correctly for edge times (12:00, 12:58, 1:00)
+- [ ] `npx tsc --noEmit` passes (type safety check)
+- [ ] `npm run dev` starts without errors
+- [ ] Switch language EN ↔ HE in Settings — all strings update correctly
+- [ ] Template functions work: level labels, aria labels, scores in LevelIntro, GameSession, HighScores, Summary
+- [ ] Hint system works: hints show localized templates with clock values filled in
+- [ ] `levels` data renders in LevelSelect, LevelIntro, GameSession, HighScores
+- [ ] All 16+ consuming components display correct translations in both languages
 
 ---
-
-## Edge Cases (cross-cutting)
-- **localStorage quota exceeded**: Wrap writes in try/catch (same pattern as `LanguageContext.tsx`)
-- **Hint text overflow**: Long Hebrew text → CSS `word-break: break-word`
-- **Rapid clicking**: Hint button disabled during answer feedback animation
-- **Missing template placeholders**: Return raw template if placeholder not found (graceful degradation)
-- **Level 1**: Hint only mentions hour hand — must not confuse by mentioning minutes
 
 ## Open Questions
-- Should using a hint penalize the score or star rating? (Current plan: **no penalty**)
-- Should hint usage be tracked in `Answer` for analytics? (Current plan: **no**)
-- Should there be a per-question hint limit? (Current plan: **no limit** — child can re-open freely)
+
+1. **Lazy loading**: Should language JSON files be dynamically imported (`import()`) to reduce initial bundle? Current approach uses static imports for simplicity. Dynamic loading adds an async initialization / loading state in `LanguageProvider`. Can be deferred to a follow-up task.
+2. **JSON schema validation**: Should we add a build-time check that both JSON files have the same keys? Useful as more languages are added. Could be a simple unit test or a custom lint rule. Not required for this task.
+3. **Vite JSON ambient types**: Consider a `src/i18n/locales/json.d.ts` to strongly type JSON imports. Optional — the `as RawTranslationStrings` cast is sufficient.
 
