@@ -195,9 +195,9 @@
   opacity: 0;
 }
 
-/* Dim non-active hand */
+/* Dim non-active hand — keep visible so kids can still see both hands */
 .clock-hand--dimmed .clock-hand {
-  opacity: 0.2;
+  opacity: 0.55;
   transition: opacity 0.4s ease;
 }
 
