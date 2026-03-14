@@ -223,7 +223,7 @@ export const translations: Record<Language, TranslationStrings> = {
   },
   he: {
     chooseYourAdventure: 'בחרו את ההרפתקה שלכם',
-    appTitle: 'TeachWatch',
+    appTitle: 'גאון שעון',
     trophyRoom: 'חדר הגביעים',
     availableLevels: 'שלבים זמינים',
 
