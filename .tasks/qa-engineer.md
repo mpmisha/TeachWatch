@@ -1,6 +1,6 @@
-# QA Engineer — Task
+# QA Engineer — No Tasks
 
-## Chunk C8: Verification and Smoke Testing
+No QA tasks for this redesign plan. Visual verification is embedded in each CSS task. See `expert-react-frontend-engineer.md`.
 - **Phase**: 3
 - **Dependencies**: C5, C6, C7
 - **Files to create/modify**: none (read-only verification across all modified files)

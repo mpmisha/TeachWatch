@@ -1,6 +1,6 @@
-# SVG Animation Engineer — Task
+# SVG Animation Engineer — No Tasks
 
-## Chunk C3: Clock SVG Hint Highlighting
+No SVG Animation tasks for this redesign plan. Clock hand color changes are CSS-only. See `expert-react-frontend-engineer.md`.
 - **Phase**: 1
 - **Dependencies**: C0 (shared types)
 - **Files to create/modify**:

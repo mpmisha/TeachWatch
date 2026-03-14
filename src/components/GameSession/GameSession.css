@@ -7,20 +7,21 @@
   padding: var(--space-4, 1rem);
   padding-top: 60px;
   background:
-    radial-gradient(circle at 10% 5%, rgba(67, 97, 238, 0.12), transparent 42%),
-    radial-gradient(circle at 90% 100%, rgba(0, 184, 148, 0.12), transparent 44%),
+    radial-gradient(circle at 10% 5%, rgba(92, 124, 250, 0.12), transparent 42%),
+    radial-gradient(circle at 90% 100%, rgba(32, 201, 151, 0.12), transparent 44%),
     var(--color-background, #f8f9fa);
   overflow: hidden;
 }
 
 .game-session__header {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: var(--space-3, 0.75rem);
+  gap: var(--space-2, 0.5rem);
 }
 
 .game-session__quit-button {
-  flex: 0 0 auto;
+  align-self: flex-start;
   min-height: 44px;
   width: auto;
   padding: 0.5rem 0.9rem;
@@ -29,19 +30,16 @@
 }
 
 .game-session__level-title {
-  flex: 1;
   text-align: center;
   font-size: var(--font-size-base, 1rem);
   font-weight: var(--font-weight-bold, 700);
   color: var(--color-text-secondary, #636e72);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
   margin: 0;
 }
 
 .game-session__progress-wrap {
-  flex: 1;
+  width: 100%;
+  max-width: 400px;
   padding: 0.25rem 0.5rem;
   border-radius: var(--radius-lg, 16px);
   background-color: color-mix(in oklab, var(--color-surface, #ffffff) 88%, transparent);
@@ -64,18 +62,26 @@
 }
 
 .question-view {
+  position: relative;
   width: min(820px, 100%);
   height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: clamp(0.75rem, 2.8vh, 1.5rem);
+  gap: clamp(0.5rem, 1.5vh, 1rem);
 }
 
 .question-view__tip-banner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  margin-inline: auto;
+  z-index: 2;
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: var(--space-3, 0.75rem);
   width: min(640px, 100%);
   padding: var(--space-3, 0.75rem) var(--space-4, 1rem);
@@ -83,7 +89,9 @@
   border: 2px solid #f0d060;
   border-radius: var(--radius-lg, 16px);
   box-shadow: var(--shadow-sm, 0 1px 2px rgba(0, 0, 0, 0.05));
-  animation: tip-fade-in 0.4s ease-out;
+  opacity: 0.8;
+  animation: tip-fade-in-out 8s ease-out forwards;
+  pointer-events: auto;
 }
 
 .question-view__tip-icon {
@@ -98,28 +106,47 @@
   line-height: 1.4;
 }
 
-@keyframes tip-fade-in {
-  from {
+@keyframes tip-fade-in-out {
+  0% {
     opacity: 0;
     transform: translateY(-8px);
   }
 
-  to {
-    opacity: 1;
+  5% {
+    opacity: 0.8;
     transform: translateY(0);
+  }
+
+  85% {
+    opacity: 0.8;
+    transform: translateY(0);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateY(-8px);
+    pointer-events: none;
   }
 }
 
 .question-view__clock {
+  flex: 1 1 auto;
+  min-height: 0;
   display: grid;
   place-items: center;
+  overflow: hidden;
 }
 
 .question-view__answers {
+  flex: 0 0 auto;
+  min-height: 0;
   width: min(640px, 100%);
+  display: flex;
+  align-items: stretch;
 }
 
 .question-view__transition {
+  width: 100%;
   min-height: 132px;
   display: grid;
   place-items: center;
@@ -134,6 +161,7 @@
 .feedback-overlay {
   position: absolute;
   inset: 0;
+  bottom: 50%;
   display: grid;
   place-items: center;
   font-size: clamp(1.45rem, 3.6vw, 2.35rem);
@@ -162,10 +190,6 @@
     gap: var(--space-3, 0.75rem);
   }
 
-  .game-session__header {
-    flex-wrap: wrap;
-  }
-
   .game-session__level-title {
     font-size: var(--font-size-sm, 0.875rem);
   }
@@ -183,6 +207,7 @@
   }
 
   .question-view__answers {
+    flex: 0 1 auto;
     width: 100%;
   }
 

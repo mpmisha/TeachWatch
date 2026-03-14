@@ -2,7 +2,7 @@
   min-height: var(--touch-min, 60px);
   width: 100%;
   border: none;
-  border-radius: var(--radius-lg, 16px);
+  border-radius: var(--radius-full, 9999px);
   padding: 0.75rem 1rem;
   font-family: var(--font-display, 'Baloo 2', 'Comic Sans MS', cursive, sans-serif);
   font-size: var(--text-md, 1.125rem);
@@ -49,11 +49,11 @@
 }
 
 .tw-button--answer {
-  min-height: calc(var(--touch-min, 60px) + 8px);
+  min-height: 64px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   text-align: center;
-  font-size: var(--text-answer, clamp(1.25rem, 2.5vw, 1.75rem));
+  font-size: 1.6rem;
   letter-spacing: 0.02em;
 }

@@ -4,10 +4,10 @@
   --summary-title: var(--color-title, #1f3c6e);
   --summary-text: var(--color-body, #2f3f54);
   --summary-accent: var(--color-accent, #ff9f43);
-  --summary-gold: #f9b233;
+  --summary-gold: #FCC419;
   --summary-empty-star: #cbd5e1;
-  --summary-right: var(--color-good, #2f9e44);
-  --summary-wrong: #cf3a2a;
+  --summary-right: #20C997;
+  --summary-wrong: #FF6B6B;
 
   min-height: 100dvh;
   padding: clamp(10px, 2.4vw, 24px);
@@ -64,7 +64,7 @@
 }
 
 .summary-stars__star {
-  font-size: clamp(1.6rem, 4.8vw, 2.3rem);
+  font-size: clamp(2rem, 6vw, 3rem);
   line-height: 1;
   transform: scale(0.5);
   opacity: 0;
@@ -73,7 +73,7 @@
 
 .summary-stars__star.is-filled {
   color: var(--summary-gold);
-  text-shadow: 0 3px 10px rgba(249, 178, 51, 0.4);
+  text-shadow: 0 3px 10px rgba(252, 196, 25, 0.45);
 }
 
 .summary-stars__star.is-empty {

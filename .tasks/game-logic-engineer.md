@@ -1,6 +1,6 @@
-# Game Logic Engineer — Task
+# Game Logic Engineer — No Tasks
 
-## Chunk C1: Rewrite `hintEngine.ts` to produce `VisualHint`
+No Game Logic tasks for this redesign plan. This is a CSS-only styling update. See `expert-react-frontend-engineer.md`.
 - **Phase**: 1
 - **Dependencies**: C0 (shared types)
 - **Files to create/modify**:

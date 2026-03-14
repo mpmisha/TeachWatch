@@ -1,6 +1,6 @@
-# Translation Engineer — Task
+# Translation Engineer — No Tasks
 
-## Chunk C5: Remove old hint translations + clean up i18n types
+No Translation tasks for this redesign plan. This is a visual-only update with no text changes. See `expert-react-frontend-engineer.md`.
 - **Phase**: 1
 - **Dependencies**: C0 (shared types — specifically, old `Hint` type is removed)
 - **Files to create/modify**:

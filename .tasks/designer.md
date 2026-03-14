@@ -1,4 +1,6 @@
-# Designer — Task
+# Designer — No Tasks
+
+This redesign is CSS-only. No designer tasks for this plan. See `expert-react-frontend-engineer.md`. — Task
 
 ## Chunk C4: Redesign Hint Button
 - **Phase**: 1

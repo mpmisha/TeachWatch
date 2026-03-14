@@ -14,8 +14,9 @@
   grid-template-rows: auto 1fr;
   gap: clamp(10px, 1.8vw, 16px);
   background:
-    radial-gradient(circle at 10% 8%, rgba(255, 220, 160, 0.34), transparent 32%),
-    radial-gradient(circle at 90% 92%, rgba(144, 228, 200, 0.2), transparent 36%),
+    radial-gradient(circle at 50% 30%, #e5f4ff 0%, transparent 60%),
+    radial-gradient(circle at 10% 8%, rgba(255, 220, 160, 0.2), transparent 34%),
+    radial-gradient(circle at 90% 92%, rgba(144, 228, 200, 0.14), transparent 38%),
     linear-gradient(165deg, #fffef9 0%, #fff6ea 100%);
   color: var(--body);
 }
@@ -81,10 +82,10 @@
 
 .high-scores__card {
   border: 1px solid var(--panel-border);
-  border-radius: 18px;
+  border-radius: 24px;
   background: var(--panel-bg);
   padding: clamp(10px, 1.5vw, 14px);
-  box-shadow: 0 6px 14px rgba(26, 42, 64, 0.12);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.05);
   display: grid;
   grid-template-rows: auto auto 1fr;
   gap: 6px;
