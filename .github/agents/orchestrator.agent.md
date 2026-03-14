@@ -124,7 +124,8 @@ flowchart TD
 
 These are the only agents you can call. Each has a specific role:
 
-- **Planner** — Creates parallelized implementation plans with explicit file assignments and chunk dependencies
+- **Product Manager** — Creates detailed product specifications, defines user behaviors, acceptance criteria, and edge cases. The source of truth for *what* to build and *why*. Called before the Planner for significant features.
+- **Planner** — Creates parallelized implementation plans with explicit file assignments and chunk dependencies. Works from the PM's spec — never invents product requirements.
 - **Expert React Frontend Engineer** — Writes code, fixes bugs, implements React component and application logic (React 19.2 specialist). You may spawn **multiple instances in parallel**, each scoped to different files.
 - **SVG Animation Engineer** — Owns the clock SVG rendering, hand rotation, feedback animations, and all motion
 - **Game Logic Engineer** — Owns question generation, distractor engine, level progression, scoring, and localStorage persistence
@@ -153,7 +154,7 @@ You have two workflows. Choose the right one based on the scope of the request.
 ### Workflow Files
 
 The full workflow definitions live in `.github/prompts/`:
-- **`.github/prompts/full-pipeline.prompt.md`** — The 7-stage end-to-end pipeline: Planning → Design → Parallel Development → Integration → QA (with fix loop) → Translation → Commit & Push
+- **`.github/prompts/full-pipeline.prompt.md`** — The 8-stage end-to-end pipeline: Product Spec → Planning (with PM ↔ Planner clarification loop) → Design → Parallel Development → Integration → QA (with fix loop) → Translation → Commit & Push
 - **`.github/prompts/quick-fix.prompt.md`** — Direct delegation for minor tasks with optional translation and auto-commit
 
 **Read the appropriate workflow file** at the start of every task to follow the correct process. The workflow file is the source of truth for the execution stages.
@@ -225,12 +226,13 @@ When delegating, point agents to their task file. The task file describes WHAT n
 
 ## Example: "Add a settings screen to the app" (Full Pipeline)
 
-Orchestrator reads `.github/prompts/full-pipeline.prompt.md` and follows Stages 1-7:
+Orchestrator reads `.github/prompts/full-pipeline.prompt.md` and follows Stages 1-8:
 
-1. **Planning** → Planner creates task files
-2. **Design** → Designer creates settings UI
-3. **Development** → 3 parallel agents build component, hook, and persistence
-4. **Integration** → verify wiring
-5. **QA** → QA Engineer tests → finds mobile bug → Planner creates fix plan → fix → re-test → pass ✅
-6. **Translation** → Translation Engineer polishes Hebrew strings
-7. **Commit & Push** → meaningful commit message, auto-push
+1. **Product Spec** → PM creates `.tasks/SPEC.md` with user flows, acceptance criteria, scope
+2. **Planning** → Planner reads spec, asks PM for clarifications, PM updates spec, Planner finalizes plan
+3. **Design** → Designer creates settings UI
+4. **Development** → 3 parallel agents build component, hook, and persistence
+5. **Integration** → verify wiring
+6. **QA** → QA Engineer tests → finds mobile bug → Planner creates fix plan → fix → re-test → pass ✅
+7. **Translation** → Translation Engineer polishes Hebrew strings
+8. **Commit & Push** → meaningful commit message, auto-push
