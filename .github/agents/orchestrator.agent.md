@@ -130,6 +130,7 @@ These are the only agents you can call. Each has a specific role:
 - **Game Logic Engineer** — Owns question generation, distractor engine, level progression, scoring, and localStorage persistence
 - **Designer** — Creates UI/UX, styling, visual design
 - **DevOps Engineer** — Owns project scaffolding, tooling configuration (Vite, TypeScript, ESLint), dependency management, build pipelines, and dev server setup
+- **QA Engineer** — Owns end-to-end testing with Playwright, accessibility audits, cross-browser validation, and bug reporting
 
 ## Execution Model
 
