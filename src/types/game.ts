@@ -57,7 +57,7 @@ export interface LevelRecord {
 export type HighScores = Record<number, LevelRecord>;
 
 /** App-level navigation state */
-export type View = 'levelSelect' | 'game' | 'summary' | 'highScores';
+export type View = 'levelSelect' | 'game' | 'summary' | 'highScores' | 'settings';
 
 /** SVG clock animation state */
 export type ClockAnimationState = 'idle' | 'correct' | 'incorrect' | 'sweeping';

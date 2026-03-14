@@ -7,6 +7,7 @@ const STORAGE_KEY = 'teachwatch-highscores';
 export function useHighScores(): {
   highScores: HighScores;
   updateHighScore: (level: number, result: SessionResult) => void;
+  resetHighScores: () => void;
 } {
   const [highScores, setHighScores] = useState<HighScores>({});
 
@@ -59,5 +60,14 @@ export function useHighScores(): {
     });
   };
 
-  return { highScores, updateHighScore };
+  const resetHighScores = () => {
+    setHighScores({});
+    try {
+      localStorage.removeItem(STORAGE_KEY);
+    } catch {
+      // Ignore persistence errors.
+    }
+  };
+
+  return { highScores, updateHighScore, resetHighScores };
 }

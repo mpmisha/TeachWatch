@@ -1,0 +1,177 @@
+.settings {
+  --settings-bg: var(--color-surface, #fff9ef);
+  --settings-panel: var(--color-panel, #fffdf7);
+  --settings-border: var(--color-border, #e7dbc8);
+  --settings-title: var(--color-title, #1f3c6e);
+  --settings-text: var(--color-body, #2f3f54);
+  --settings-muted: var(--color-text-muted, #5a6c82);
+  --settings-primary: var(--color-primary, #0f766e);
+  --settings-primary-soft: var(--color-primary-soft, #ddf4ef);
+  --settings-error: var(--color-error, #dc2626);
+  --settings-error-strong: var(--color-error-strong, #b91c1c);
+  --settings-on-error: var(--color-on-error, #ffffff);
+
+  min-height: 100dvh;
+  overflow: hidden;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  gap: clamp(12px, 2.4vw, 22px);
+  padding-block: clamp(14px, 2.4vw, 24px);
+  padding-inline: clamp(12px, 2.6vw, 28px);
+  background:
+    radial-gradient(circle at 15% 6%, rgba(255, 214, 157, 0.35), transparent 28%),
+    radial-gradient(circle at 88% 90%, rgba(152, 226, 201, 0.22), transparent 36%),
+    linear-gradient(160deg, #fffef9 0%, var(--settings-bg) 100%);
+  color: var(--settings-text);
+}
+
+.settings__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.settings__title {
+  margin: 0;
+  color: var(--settings-title);
+  font-size: clamp(1.72rem, 4.5vw, 2.5rem);
+  line-height: 1.08;
+  text-align: start;
+}
+
+.settings__back {
+  width: auto;
+  min-width: 96px;
+  padding-inline: 16px;
+  min-height: var(--touch-min, 48px);
+  border-radius: 999px;
+}
+
+.settings__content {
+  min-height: 0;
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  gap: clamp(10px, 2vw, 16px);
+  align-content: stretch;
+}
+
+.settings__card {
+  background: var(--settings-panel);
+  border: 1px solid var(--settings-border);
+  border-radius: 20px;
+  box-shadow: var(--shadow-soft, 0 8px 18px rgba(26, 42, 64, 0.12));
+  padding-block: clamp(14px, 2vw, 20px);
+  padding-inline: clamp(12px, 2.3vw, 20px);
+  display: grid;
+  grid-template-rows: auto 1fr;
+  gap: clamp(8px, 1.7vw, 12px);
+}
+
+.settings__card-title {
+  margin: 0;
+  font-size: clamp(1.05rem, 2.4vw, 1.28rem);
+  color: var(--settings-title);
+  text-align: start;
+}
+
+.settings__language-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 0;
+}
+
+.settings__language-label {
+  font-size: clamp(0.98rem, 2.1vw, 1.1rem);
+  font-weight: 700;
+  color: var(--settings-muted);
+  text-align: start;
+}
+
+.settings__segment {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--settings-border) 56%, white 44%);
+  border: 1px solid color-mix(in srgb, var(--settings-border) 78%, white 22%);
+}
+
+.settings__segment-btn {
+  border: 0;
+  min-height: var(--touch-min, 48px);
+  min-width: clamp(66px, 12vw, 90px);
+  border-radius: 999px;
+  font: inherit;
+  font-size: clamp(0.98rem, 1.9vw, 1.06rem);
+  font-weight: 800;
+  color: var(--settings-muted);
+  background: transparent;
+  cursor: pointer;
+  transition: background-color 140ms ease, color 140ms ease, transform 140ms ease;
+}
+
+.settings__segment-btn:hover {
+  transform: translateY(-1px);
+}
+
+.settings__segment-btn.is-active {
+  color: var(--settings-primary);
+  background: var(--settings-primary-soft);
+  box-shadow: 0 5px 12px rgba(15, 118, 110, 0.2);
+}
+
+.settings__segment-btn:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--settings-primary) 72%, white 28%);
+  outline-offset: 2px;
+}
+
+.settings__reset {
+  align-self: end;
+  background: linear-gradient(145deg, var(--settings-error), var(--settings-error-strong));
+  color: var(--settings-on-error);
+  border-radius: var(--radius-lg, 16px);
+  box-shadow: 0 10px 20px rgba(185, 28, 28, 0.24);
+  text-align: start;
+  padding-inline: clamp(12px, 2vw, 16px);
+}
+
+.settings__reset:hover {
+  filter: brightness(1.02);
+}
+
+.settings__reset.is-done {
+  background: linear-gradient(
+    145deg,
+    color-mix(in srgb, var(--settings-primary) 86%, white 14%),
+    color-mix(in srgb, var(--settings-primary) 72%, black 28%)
+  );
+}
+
+@media (max-width: 600px) {
+  .settings {
+    gap: 10px;
+    padding-block: 10px;
+    padding-inline: 10px;
+  }
+
+  .settings__header {
+    align-items: flex-start;
+  }
+
+  .settings__content {
+    gap: 10px;
+  }
+
+  .settings__language-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .settings__segment {
+    margin-inline-start: auto;
+    margin-inline-end: auto;
+  }
+}

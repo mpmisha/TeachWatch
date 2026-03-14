@@ -7,9 +7,31 @@
   position: relative;
 }
 
-.app__language-toggle {
+.app__settings-button {
   position: absolute;
   top: var(--space-3, 0.75rem);
   inset-inline-end: var(--space-3, 0.75rem);
   z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: var(--radius-full, 9999px);
+  background: var(--color-surface, #fff);
+  color: var(--color-text-secondary, #636e72);
+  box-shadow: var(--shadow-sm, 0 1px 2px rgba(0, 0, 0, 0.05));
+  cursor: pointer;
+  transition: color var(--transition-fast, 150ms) ease,
+              background var(--transition-fast, 150ms) ease;
+}
+
+.app__settings-button:hover {
+  color: var(--color-primary, #4361ee);
+  background: var(--color-background, #f8f9fa);
+}
+
+.app__settings-button:active {
+  transform: scale(0.93);
 }
