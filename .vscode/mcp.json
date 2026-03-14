@@ -11,9 +11,12 @@
       "args": ["@playwright/mcp@latest"]
     },
     "stitch": {
-      "type": "stdio",
-      "command": "npx",
-      "args": ["-y", "@_davideast/stitch-mcp"]
+      "type": "http",
+      "url": "https://stitch.googleapis.com/mcp",
+      "headers": {
+        "Accept": "application/json, text/event-stream",
+        "X-Goog-Api-Key": "${env:STITCH_API_KEY}"
+      }
     }
   }
 }
